@@ -116,7 +116,7 @@ section.blk{padding:72px 0 8px}
 
 /* project view */
 .pv{padding-top:20px}
-.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--muted);text-decoration:none;font-size:16px}
+.back{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;min-width:44px;margin-left:-10px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:16px}
 .back:hover{color:var(--fg)}
 .back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .pv h1{font-size:38px;font-weight:500;letter-spacing:-.03em;margin:22px 0 6px;line-height:1.05}
@@ -252,7 +252,7 @@ section.blk{padding:72px 0 8px}
 
 <main id="project" hidden>
   <div class="wrap pv">
-    <a class="back" href="#projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>All projects</a>
+    <a class="back" href="#projects" aria-label="Back to projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
     <div id="pvart" style="margin-top:14px"></div>
     <h1 id="pvtitle"></h1>
     <div class="meta"><span id="pvsub"></span><a class="visit" id="pvlink" href="#" rel="noopener">Visit live site ↗</a></div>
@@ -271,7 +271,7 @@ section.blk{padding:72px 0 8px}
 
 <main id="docview" hidden>
   <div class="wrap doc">
-    <a class="back" href="#top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>Home</a>
+    <a class="back" href="#top" aria-label="Back to home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
     <div class="dtabs" role="navigation" aria-label="Documents"><a href="#resume" id="d-resume">Resume</a><a href="#cover-letter" id="d-cover-letter">Cover letter</a></div>
     <h1 id="dtitle">Resume</h1>
     <p class="dsub" id="dsub">Preview</p>
