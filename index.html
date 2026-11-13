@@ -125,7 +125,11 @@ section.blk{padding:72px 0 8px}
 .visit:hover{background:#fff}
 .tabs{display:flex;gap:6px;margin:34px 0 0;border-bottom:1px solid var(--line)}
 .tab{min-height:44px;padding:0 14px;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:inherit;font-size:16px;cursor:pointer;margin-bottom:-1px}
-.tab[aria-selected="true"]{color:var(--fg);border-color:#c9a7f5}
+.tab[aria-current="true"]{color:var(--fg);border-color:#c9a7f5}
+.tabs{position:sticky;top:61px;z-index:10;background:rgba(15,15,16,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.tp section{scroll-margin-top:120px;padding-top:8px}
+.tp section+section{margin-top:28px}
+.tp h2{font-size:22px;font-weight:500;letter-spacing:-.02em;color:var(--fg);margin:0 0 12px}
 .tp{padding:24px 0 8px;font-size:18px;line-height:1.65;color:#c4c4c1}
 .tp p{margin:0 0 16px}
 .tp ul{margin:0 0 16px;padding-left:20px}
@@ -241,12 +245,12 @@ section.blk{padding:72px 0 8px}
     <div id="pvart" style="margin-top:14px"></div>
     <h1 id="pvtitle"></h1>
     <div class="meta"><span id="pvsub"></span><a class="visit" id="pvlink" href="#" rel="noopener">Visit live site ↗</a></div>
-    <div class="tabs" role="tablist" aria-label="Case study">
-      <button class="tab" role="tab" id="t-overview" aria-controls="tp" aria-selected="true">Overview</button>
-      <button class="tab" role="tab" id="t-challenge" aria-controls="tp" aria-selected="false">Challenge</button>
-      <button class="tab" role="tab" id="t-solution" aria-controls="tp" aria-selected="false">Solution</button>
-    </div>
-    <div class="tp" id="tp" role="tabpanel"></div>
+    <nav class="tabs" aria-label="Jump to section">
+      <button class="tab" id="t-overview" data-go="overview" aria-current="true">Overview</button>
+      <button class="tab" id="t-challenge" data-go="challenge">Challenge</button>
+      <button class="tab" id="t-solution" data-go="solution">Solution</button>
+    </nav>
+    <div class="tp" id="tp"></div>
     <div class="cta">
       <h2>Want to work? Let's talk</h2>
       <a href="mailto:munachiochem143@gmail.com">munachiochem143@gmail.com ↗</a>
@@ -351,19 +355,46 @@ section.blk{padding:72px 0 8px}
   // Project view
   var home = document.getElementById('home'), pv = document.getElementById('project');
   var cur = null, tab = 'overview';
-  function renderTab() {
-    var d = tab === 'solution' ? cur.solution.text : cur[tab], html = '';
-    d.forEach(function (x) {
-      if (Array.isArray(x)) html += '<ul>' + x.map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
-      else html += '<p>' + esc(x) + '</p>';
-    });
-    if (tab === 'solution') html += '<div class="stills">' + cur.solution.stills.map(still).join('') + '</div>';
-    document.getElementById('tp').innerHTML = html;
-    if (tab === 'solution') requestAnimationFrame(fitStills);
-    ['overview', 'challenge', 'solution'].forEach(function (t) {
-      document.getElementById('t-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false');
+  function para(d) {
+    return d.map(function (x) {
+      if (Array.isArray(x)) return '<ul>' + x.map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
+      return '<p>' + esc(x) + '</p>';
+    }).join('');
+  }
+  function renderAll() {
+    document.getElementById('tp').innerHTML =
+      '<section id="s-overview"><h2>Overview</h2>' + para(cur.overview) + '</section>' +
+      '<section id="s-challenge"><h2>Challenge</h2>' + para(cur.challenge) + '</section>' +
+      '<section id="s-solution"><h2>Solution</h2>' + para(cur.solution.text) + '<div class="stills">' + cur.solution.stills.map(still).join('') + '</div></section>';
+    requestAnimationFrame(fitStills);
+    mark('overview');
+  }
+  function mark(t) {
+    ['overview', 'challenge', 'solution'].forEach(function (k) {
+      var b = document.getElementById('t-' + k);
+      if (k === t) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
     });
   }
+  var jumping = 0;
+  ['overview', 'challenge', 'solution'].forEach(function (t) {
+    document.getElementById('t-' + t).addEventListener('click', function () {
+      var el = document.getElementById('s-' + t);
+      if (el) { mark(t); jumping = Date.now(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+  window.addEventListener('scroll', function () {
+    if (pv.hidden || Date.now() - jumping < 800) return;
+    var cur2 = 'overview';
+    ['overview', 'challenge', 'solution'].forEach(function (t) {
+      var el = document.getElementById('s-' + t);
+      if (el && el.getBoundingClientRect().top < 160) cur2 = t;
+    });
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4 && document.getElementById('s-solution')) {
+      var sol = document.getElementById('s-solution').getBoundingClientRect();
+      if (sol.top < window.innerHeight) cur2 = 'solution';
+    }
+    mark(cur2);
+  }, { passive: true });
   function still(st) {
     var inner;
     if (st.img) inner = '<img src="' + esc(st.img) + '" alt="' + esc(cur.name + ' — ' + st.cap) + '" loading="lazy">';
@@ -382,21 +413,18 @@ section.blk{padding:72px 0 8px}
     });
   }
   window.addEventListener('resize', function () { if (!pv.hidden) fitStills(); });
-  ['overview', 'challenge', 'solution'].forEach(function (t) {
-    document.getElementById('t-' + t).addEventListener('click', function () { tab = t; renderTab(); });
-  });
 
   function route() {
     var h = (location.hash || '').slice(1);
     var m = h.indexOf('p-') === 0 ? P.filter(function (p) { return 'p-' + p.id === h; })[0] : null;
     if (m) {
-      cur = m; tab = 'overview';
+      cur = m;
       document.getElementById('pvart').innerHTML = art(m, true);
       document.getElementById('pvtitle').textContent = m.name;
       document.getElementById('pvsub').textContent = m.sub + ' · 2026';
       document.getElementById('pvlink').href = m.url;
       document.title = m.name + ' — Muniac';
-      renderTab();
+      renderAll();
       home.hidden = true; pv.hidden = false;
       fitLive();
       window.scrollTo(0, 0);
