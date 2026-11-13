@@ -130,6 +130,14 @@ section.blk{padding:72px 0 8px}
 .tp p{margin:0 0 16px}
 .tp ul{margin:0 0 16px;padding-left:20px}
 .tp li{margin:6px 0}
+.stills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}
+.stills figure{margin:0}
+.stills img,.sframe{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;background:#1a1a1c;border:1px solid var(--line)}
+.sframe{position:relative;overflow:hidden}
+.sframe iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
+.sframe.off{display:flex;align-items:center;justify-content:center;padding:12px;text-align:center;font-size:12px;color:var(--soft)}
+.stills figcaption{font-size:13px;color:var(--muted);margin-top:8px}
+@media (max-width:520px){.stills{grid-template-columns:1fr}}
 .cta{margin:48px 0 0;padding:28px 24px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
 .cta h2{margin:0 0 10px;font-size:26px;font-weight:500;letter-spacing:-.02em}
 .cta a{font-size:18px;color:#c9a7f5;text-decoration:none;word-break:break-all}
@@ -236,7 +244,7 @@ section.blk{padding:72px 0 8px}
     <div class="tabs" role="tablist" aria-label="Case study">
       <button class="tab" role="tab" id="t-overview" aria-controls="tp" aria-selected="true">Overview</button>
       <button class="tab" role="tab" id="t-challenge" aria-controls="tp" aria-selected="false">Challenge</button>
-      <button class="tab" role="tab" id="t-outcome" aria-controls="tp" aria-selected="false">Outcome</button>
+      <button class="tab" role="tab" id="t-solution" aria-controls="tp" aria-selected="false">Solution</button>
     </div>
     <div class="tp" id="tp" role="tabpanel"></div>
     <div class="cta">
@@ -255,43 +263,51 @@ section.blk{padding:72px 0 8px}
 
 <script>
 (function () {
-  // Project data. "art" fields style the placeholder screenshot until real screenshots are added.
+  // Project data. "art" styles the stand-in card when live previews can't load; "stills" are images or live crops of each site.
+  var HH = 'Built during Michael\'s frontend internship at Harvest House.';
   var P = [
     { id: 'ojuju-calabar', name: 'Ojuju Calabar', sub: 'Horror game · Muniac Studios', url: 'https://ojujucalabar.vercel.app/',
       art: { bg: '#2a0f14', win: '#0c0a11', fg: '#e9dcd2', acc: '#b3261e', k: 'Muniac Studios presents', h: 'Something is calling your name', s: "Don't move. Don't answer.", b: 'Tap to enter', hs: 30 },
-      overview: ['A mobile-first horror game set in Calabar, published under Muniac Studios. It opens on a title screen, then pulls the player into a haunted, Nigerian-themed space where the rule is simple: don\'t move, don\'t answer.', 'It runs in the browser as a full-screen web app, so anyone can play it from a link.'],
-      challenge: ['Make horror work on a phone, in a browser, without an app store.', ['Hold the mood on a small screen with sound, pacing and darkness instead of big set pieces.', 'Handle landscape vs portrait: the game asks to be played sideways but still lets players stay upright.', 'Keep progress so a session can be interrupted and picked back up.']],
-      outcome: ['A playable, installable web game with a title screen, orientation prompt, skippable intro and saved progress, and a Nigerian folklore setting that gives it its own identity.'] },
+      overview: ['A first-person 3D Nigerian horror escape game for phones and computers, published by Muniac Studios.', 'October 1997. Tobenna "Tobi" Adeleke goes back to his father\'s empty house on the hill at Oke-Ọla, twenty-two years to the night after his mother fled it with him. Something the hill children call Ojuju Calabar is still there. It doesn\'t want revenge. It wants its name and a burial.'],
+      challenge: ['Make a full horror game that runs in a browser on an ordinary phone, rooted in Nigerian stories instead of borrowed ones.', ['Keep it light enough to load fast on mobile data: no heavy model or audio files.', 'Make it replayable, so walkthroughs and memorised speedruns don\'t spoil it.', 'Run a fair public leaderboard for a game anyone can open in a browser.']],
+      solution: { text: ['Seven rooms and the roof, each with its own puzzle chain, scares, hints and journal. Fourteen memory pages and seven comic-strip memories tell the story, and the true ending needs all fourteen.', ['Runs on its own small WebGL engine. Every texture is painted in code and every sound is synthesised.', 'Every new game rolls its own puzzle answers: clock codes, music-box order, pounding rhythm, candle order.', 'NEPA takes light: in mains-lit rooms the power can cut, the generators start down the hill, and you play by torchlight until "Up NEPA!".', 'A live speedrun leaderboard on Supabase, with server checks on every run before it reaches the board.', 'Ships as a web game, an Android app and a CrazyGames build with opt-in ads only.']],
+        stills: [{ img: 'img/ojuju/title.jpg', cap: 'Title screen' }, { img: 'img/ojuju/loading.jpg', cap: 'Loading illustration' }, { img: 'img/ojuju/comic-calm.jpg', cap: 'Comic-strip memory' }, { img: 'img/ojuju/comic-pray.jpg', cap: 'Comic-strip memory' }] } },
     { id: 'strikerank', name: 'StrikeRank', sub: 'Blood Strike team rank system', url: 'https://bsrankin.lovable.app',
       art: { bg: '#3a0d0d', win: '#111214', fg: '#f3f3f1', acc: '#ff3b30', k: 'Blood Strike stats', h: 'Prove your ego', s: 'Log matches, earn an Ego Score out of 10,000 and climb the live ladder.', b: 'View leaderboard', hs: 34 },
-      overview: ['An unofficial stat tracker for the mobile shooter Blood Strike. Players paste their scoreboard, the site reads kills, assists, deaths, damage and placement, and every match feeds an Ego Score out of 10,000 and a live global leaderboard.', 'Pages: Home, Leaderboard, Players, Compare and About, plus an admin login for moderators.'],
-      challenge: ['Build a rating that rewards playing well, not just playing a lot, and keep it honest.', ['Weight averages, win rate, consistency and recent form so grinding games barely moves the score.', 'Flag impossible stats and block duplicate submissions.', 'Give moderators a way to reject bad entries.']],
-      outcome: ['A live ranking system with match logging, rank-up and rank-down movement on the ladder, player comparison, and built-in anti-cheat checks — made for the community Michael captains in.'] },
-    { id: 'lumina', name: 'Lumina', sub: 'Creative studio website', url: 'https://muni1.netlify.app/',
+      overview: ['Michael built StrikeRank so the team could track everyone\'s strengths, weaknesses and performance across their Blood Strike game sessions, instead of guessing who was carrying and who needed work.', 'Players paste their scoreboard after a match and the site reads kills, assists, deaths, damage and placement. Every match feeds an Ego Score out of 10,000 and a live leaderboard.'],
+      challenge: ['During team sessions there was no shared record of how each player was really doing. Results lived in screenshots and memory, so it was hard to see who was improving, who was slumping, and what each player was good or weak at.', ['Score players on how well they play, not just how much they play.', 'Stop one lucky game from topping the ladder.', 'Keep the numbers honest when anyone can submit a result.']],
+      solution: { text: ['A ranking built from averages, not totals, split into parts so strengths and weaknesses show up on their own:', ['Kill, damage, assist and placement scores, each capped.', 'Wins and K/D, plus a consistency score that rewards steady output.', 'Recent form: the last five matches against the career average.', 'A sample multiplier that only reaches full weight after eight verified matches.', 'Only admin-verified results count on the official leaderboard.'], 'Pages for the leaderboard, every player\'s profile, head-to-head comparison and how the score works.'],
+        stills: [{ url: 'https://bsrankin.lovable.app/leaderboard', cap: 'Leaderboard' }, { url: 'https://bsrankin.lovable.app/players', cap: 'Players' }, { url: 'https://bsrankin.lovable.app/compare', cap: 'Compare' }, { url: 'https://bsrankin.lovable.app/about', cap: 'How the Ego Score works' }] } },
+    { id: 'lumina', name: 'Lumina', sub: 'Creative studio website · Harvest House internship', url: 'https://muni1.netlify.app/',
       art: { bg: '#d9531e', win: '#0d0d0d', fg: '#f4efe8', acc: '#ff7a3d', k: 'Independent creative studio', h: 'We make brands matter.', s: 'Bold identities, immersive websites and digital experiences.', b: 'Explore work', hs: 32 },
-      overview: ['A website for Lumina, an independent creative studio in Lagos working worldwide. It sells the studio through its services, selected work and process.'],
-      challenge: ['Make a studio site feel bold and motion-led while still answering the questions clients actually ask.', ['Hero, about with studio stats, five services, three case studies, a four-step process, testimonial, FAQ and contact — in one scroll.']],
-      outcome: ['A complete studio site with a clear path from "who are you" to "let\'s talk": services, selected work, process, FAQ and a contact section with email and socials.'] },
-    { id: 'nexora', name: 'Nexora', sub: 'SaaS landing page', url: 'https://munisaas.netlify.app/',
+      overview: ['A website for Lumina, an independent creative studio in Lagos working worldwide. ' + HH],
+      challenge: ['Make a studio site feel bold and motion-led while still answering the questions clients actually ask, in one scroll.'],
+      solution: { text: [['Hero with a "trusted by" strip, and an about section with studio stats.', 'Five services, three case studies and a four-step process: discover, define, design, deliver.', 'Testimonial, FAQ, and a contact section with email and socials.']],
+        stills: [{ url: 'https://muni1.netlify.app/', y: 0, cap: 'Hero' }, { url: 'https://muni1.netlify.app/', y: 900, cap: 'About & services' }, { url: 'https://muni1.netlify.app/', y: 1800, cap: 'Selected work' }, { url: 'https://muni1.netlify.app/', y: 2700, cap: 'Process' }] } },
+    { id: 'nexora', name: 'Nexora', sub: 'SaaS landing page · Harvest House internship', url: 'https://munisaas.netlify.app/',
       art: { bg: '#1b3fd1', win: '#0b1020', fg: '#eef2ff', acc: '#6d8bff', k: 'For teams', h: 'Build Smarter. Launch Faster.', s: 'Collaborate, automate workflows and scale with confidence.', b: 'Start free trial', hs: 30 },
-      overview: ['A marketing landing page for Nexora, a SaaS platform that helps teams collaborate, automate workflows and scale. Everything points to a 14-day free trial.'],
-      challenge: ['Turn visitors into trial users with a page that explains the product fast.', ['Hero with a mock analytics dashboard, logo strip, four feature blocks and a product section.', 'Monthly / yearly pricing toggle across three plans.', 'Testimonials, FAQ and a final call to action.']],
-      outcome: ['A conversion-focused SaaS page with pricing, social proof and product previews, built to the standard of a real launch page.'] },
-    { id: 'haven-estates', name: 'Haven Estates', sub: 'Real estate website', url: 'https://muniestates.netlify.app/',
+      overview: ['A landing page for Nexora, a SaaS platform that helps teams collaborate, automate workflows and scale. Everything points to a 14-day free trial. ' + HH],
+      challenge: ['Turn visitors into trial users with a page that explains the product fast and answers the pricing question before it\'s asked.'],
+      solution: { text: [['Hero with a mock analytics dashboard, a logo strip and four feature blocks.', 'A product section, then monthly / yearly pricing across three plans.', 'Testimonials, FAQ and a final call to action.']],
+        stills: [{ url: 'https://munisaas.netlify.app/', y: 0, cap: 'Hero' }, { url: 'https://munisaas.netlify.app/', y: 900, cap: 'Features' }, { url: 'https://munisaas.netlify.app/', y: 1800, cap: 'Product' }, { url: 'https://munisaas.netlify.app/', y: 2700, cap: 'Pricing' }] } },
+    { id: 'haven-estates', name: 'Haven Estates', sub: 'Real estate website · Harvest House internship', url: 'https://muniestates.netlify.app/',
       art: { bg: '#2f4a3a', win: '#f4f1ea', fg: '#1d2a22', acc: '#2f4a3a', k: 'Ikoyi, Lagos', h: 'Find a place that feels entirely yours.', s: 'Homes, apartments and villas curated for modern living.', b: 'Explore properties', hs: 28 },
-      overview: ['A website for Haven Estates, a Lagos real estate agency selling and renting luxury homes, apartments and villas, with a personal, advisory feel.'],
-      challenge: ['Make browsing homes feel calm and considered, not like a listings dump.', ['Buy / rent / sell search with location and property type.', 'Featured listings, categories, locations across five cities, team profile and client stories.']],
-      outcome: ['A refined property site that moves people from search to a private viewing, with an enquiry form and direct contact details.'] },
-    { id: 'jca-store', name: 'JCA Store', sub: 'E-commerce store', url: 'https://moggingchinaza.netlify.app/',
+      overview: ['A website for Haven Estates, a Lagos agency selling and renting homes, apartments and villas, with a personal, advisory feel. ' + HH],
+      challenge: ['Make browsing homes feel calm and considered, not like a listings dump, and move people towards a private viewing.'],
+      solution: { text: [['Buy / rent / sell search with location and property type.', 'Featured listings, categories and locations across five cities.', 'Team profile, client stories and an enquiry form.']],
+        stills: [{ url: 'https://muniestates.netlify.app/', y: 0, cap: 'Hero & search' }, { url: 'https://muniestates.netlify.app/', y: 900, cap: 'Locations' }, { url: 'https://muniestates.netlify.app/', y: 1800, cap: 'The collection' }, { url: 'https://muniestates.netlify.app/', y: 2700, cap: 'Find your fit' }] } },
+    { id: 'jca-store', name: 'JCA Store', sub: 'E-commerce store · Harvest House internship', url: 'https://moggingchinaza.netlify.app/',
       art: { bg: '#e8dfcf', win: '#fbf8f2', fg: '#1d1b17', acc: '#1d1b17', k: 'Everyday, elevated', h: 'Good things for everyday living.', s: 'Fashion, accessories, tech and home — carefully chosen.', b: 'Shop the collection', hs: 30 },
-      overview: ['An online store for JCA, selling curated fashion, accessories, practical tech and home items, with delivery across Nigeria.'],
-      challenge: ['Build a full shopping flow, not just a product page.', ['Product grid with category filters.', 'A slide-out bag with subtotal, then a checkout form with delivery details.', 'Newsletter sign-up and a contact form.']],
-      outcome: ['A working storefront from browse to checkout, with a clean, minimal style that matches the "Everyday, elevated" brand.'] },
-    { id: 'oja', name: 'Oja', sub: 'Restaurant website', url: 'https://munisturant.netlify.app/',
+      overview: ['An online store for JCA, selling curated fashion, accessories, tech and home items, with delivery across Nigeria. ' + HH],
+      challenge: ['Build a full shopping flow, from browsing to checkout, not just a product page.'],
+      solution: { text: [['Product grid with category filters.', 'A slide-out bag with subtotal, then a checkout form with delivery details.', 'Newsletter sign-up and a contact form.']],
+        stills: [{ url: 'https://moggingchinaza.netlify.app/', y: 0, cap: 'Hero' }, { url: 'https://moggingchinaza.netlify.app/', y: 900, cap: 'Browse the store' }, { url: 'https://moggingchinaza.netlify.app/', y: 1800, cap: 'Why JCA' }, { url: 'https://moggingchinaza.netlify.app/', y: 2700, cap: 'Newsletter & contact' }] } },
+    { id: 'oja', name: 'Oja', sub: 'Restaurant website · Harvest House internship', url: 'https://munisturant.netlify.app/',
       art: { bg: '#a8431f', win: '#1a120d', fg: '#f6eadb', acc: '#e8a33d', k: 'A Lagos table', h: 'Come hungry. Leave with a story.', s: 'Nigerian ingredients, fire and generous hospitality.', b: 'Book a table', hs: 30 },
-      overview: ['A website for Oja, a modern Nigerian restaurant on Victoria Island, Lagos. It shows the menu and weekly events and gets people to book a table.'],
-      challenge: ['Capture the energy of a Lagos restaurant and make booking easy.', ['Our story, menu, private gatherings and a "this week" events list.', 'A reservation form for party size, date and time, with a separate route for large groups.']],
-      outcome: ['A lively restaurant site with a working booking flow, events and visit details, written in a playful voice that fits the brand.'] }
+      overview: ['A website for Oja, a modern Nigerian restaurant on Victoria Island, Lagos. It shows the menu and weekly events and gets people to book a table. ' + HH],
+      challenge: ['Capture the energy of a Lagos restaurant and make booking a table easy, including for large groups.'],
+      solution: { text: [['Our story, the menu, private gatherings and a "this week" events list.', 'A reservation form for party size, date and time, with a separate route for groups of nine or more.', 'Visit details with address and opening hours.']],
+        stills: [{ url: 'https://munisturant.netlify.app/', y: 0, cap: 'Hero' }, { url: 'https://munisturant.netlify.app/', y: 900, cap: 'Our story' }, { url: 'https://munisturant.netlify.app/', y: 1800, cap: 'The menu' }, { url: 'https://munisturant.netlify.app/', y: 2700, cap: 'Gatherings & events' }] } }
   ];
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -336,17 +352,37 @@ section.blk{padding:72px 0 8px}
   var home = document.getElementById('home'), pv = document.getElementById('project');
   var cur = null, tab = 'overview';
   function renderTab() {
-    var d = cur[tab], html = '';
+    var d = tab === 'solution' ? cur.solution.text : cur[tab], html = '';
     d.forEach(function (x) {
       if (Array.isArray(x)) html += '<ul>' + x.map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
       else html += '<p>' + esc(x) + '</p>';
     });
+    if (tab === 'solution') html += '<div class="stills">' + cur.solution.stills.map(still).join('') + '</div>';
     document.getElementById('tp').innerHTML = html;
-    ['overview', 'challenge', 'outcome'].forEach(function (t) {
+    if (tab === 'solution') requestAnimationFrame(fitStills);
+    ['overview', 'challenge', 'solution'].forEach(function (t) {
       document.getElementById('t-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false');
     });
   }
-  ['overview', 'challenge', 'outcome'].forEach(function (t) {
+  function still(st) {
+    var inner;
+    if (st.img) inner = '<img src="' + esc(st.img) + '" alt="' + esc(cur.name + ' — ' + st.cap) + '" loading="lazy">';
+    else if (LIVE) inner = '<div class="sframe" data-y="' + (st.y || 0) + '"><iframe src="' + esc(st.url) + '" title="' + esc(cur.name + ' — ' + st.cap) + '" loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe></div>';
+    else inner = '<div class="sframe off"><span>' + esc(st.cap) + ' — live still shows on the published site</span></div>';
+    return '<figure>' + inner + '<figcaption>' + esc(st.cap) + '</figcaption></figure>';
+  }
+  function fitStills() {
+    document.querySelectorAll('.sframe[data-y]').forEach(function (box) {
+      var w = box.clientWidth, h = box.clientHeight, f = box.firstChild, y = +box.getAttribute('data-y');
+      if (!w) return;
+      var k = w / VW;
+      f.style.width = VW + 'px';
+      f.style.height = Math.ceil(h / k + y) + 'px';
+      f.style.transform = 'translateY(' + (-y * k) + 'px) scale(' + k + ')';
+    });
+  }
+  window.addEventListener('resize', function () { if (!pv.hidden) fitStills(); });
+  ['overview', 'challenge', 'solution'].forEach(function (t) {
     document.getElementById('t-' + t).addEventListener('click', function () { tab = t; renderTab(); });
   });
 
