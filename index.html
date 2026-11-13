@@ -9,6 +9,7 @@
 <meta property="og:description" content="Game and frontend developer. Games, 3D and websites, designed and built.">
 <meta name="theme-color" content="#0f0f10">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f0f10'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='17' fill='%23c9a7f5' text-anchor='middle'%3Em%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="fonts/Garet.woff" as="font" type="font/woff" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap" rel="stylesheet">
@@ -61,7 +62,7 @@ body.lock{overflow:hidden}
 
 /* home preview strip */
 .peek{display:flex;gap:12px;overflow-x:auto;padding:12px 0 4px;margin:18px 0 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;cursor:grab}
-.peek img{flex:none;height:340px;width:auto;border-radius:16px;user-select:none;-webkit-user-drag:none;background:#1a1a1c;object-fit:cover}
+.peek img,.peek video{flex:none;height:340px;width:auto;border-radius:16px;user-select:none;-webkit-user-drag:none;background:#1a1a1c;object-fit:cover}
 .peek::-webkit-scrollbar{display:none}
 
 /* section headings */
@@ -85,7 +86,8 @@ section.blk{padding:72px 0 8px}
 .scr .btn{align-self:flex-start;font-size:10px;padding:6px 12px;border-radius:999px;margin-top:4px}
 .win{position:relative}
 .live{position:absolute;left:0;right:0;top:22px;bottom:0;overflow:hidden;background:inherit}
-.live iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
+.live iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff;opacity:0;transition:opacity .45s ease}
+.live iframe.on,.sframe iframe.on{opacity:1}
 .cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-size:17px}
 .cap span:first-child{font-weight:500}
 .cap span:last-child{color:var(--muted);font-size:15px}
@@ -138,7 +140,7 @@ section.blk{padding:72px 0 8px}
 .stills figure{margin:0}
 .stills img,.sframe{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:12px;background:#1a1a1c;border:1px solid var(--line)}
 .sframe{position:relative;overflow:hidden}
-.sframe iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
+.sframe iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff;opacity:0;transition:opacity .45s ease}
 .sframe.off{display:flex;align-items:center;justify-content:center;padding:12px;text-align:center;font-size:12px;color:var(--soft)}
 .stills figcaption{font-size:13px;color:var(--muted);margin-top:8px}
 @media (max-width:520px){.stills{grid-template-columns:1fr}}
@@ -165,7 +167,7 @@ section.blk{padding:72px 0 8px}
   .who p{font-size:16px}
   .intro p.t{font-size:18px}
   .art{padding:24px 18px 0}
-  .peek img{height:280px}
+  .peek img,.peek video{height:280px}
   .scr{padding:16px 14px 0}
   .xr .co{font-size:18px}
   .xr .yr{font-size:13px}
@@ -178,7 +180,7 @@ section.blk{padding:72px 0 8px}
   .intro{padding:88px 0 28px}
   .intro .who,.intro p.t{max-width:760px}
   .peek{margin-top:28px}
-  .peek img{height:400px}
+  .peek img,.peek video{height:400px}
   section.blk{padding:96px 0 8px}
   .plist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 24px}
   .plist .pcard:first-child{grid-column:1/-1}
@@ -230,7 +232,7 @@ section.blk{padding:72px 0 8px}
   <div class="wrap">
     <section class="intro" id="top" aria-label="Intro">
       <div class="who">
-        <div class="avatar"><img src="img/michael.jpg" alt="Ochem Michael Munachi" width="240" height="240"></div>
+        <div class="avatar"><img src="img/michael.webp" alt="Ochem Michael Munachi" width="240" height="240" fetchpriority="high"></div>
         <div>
           <h1>Ochem Michael</h1>
           <p>Game &amp; Web Developer</p>
@@ -242,13 +244,13 @@ section.blk{padding:72px 0 8px}
     </section>
   </div>
   <div class="peek" id="peek" aria-label="Moments">
-    <img src="img/intro.gif" alt="Players trying a Muniac game on laptops at an event" width="300" height="538">
-    <img src="img/still-1.jpg" alt="Grammar rules on a lecture-room whiteboard" width="1280" height="720">
-    <img src="img/still-2.jpg" alt="The Monarchs — MOG esports roster with Muniac" width="1400" height="788">
-    <img src="img/still-3.jpg" alt="MOG players spotlight: Muniac, captain" width="1120" height="1400">
-    <img src="img/still-4.jpg" alt="MOG matchday poster, ECS Division Three" width="1120" height="1400">
-    <img src="img/still-5.jpg" alt="NGFFC S4 poster: which team will win it all?" width="1120" height="1400">
-    <img src="img/still-6.jpg" alt="NGFFC S4 grand finals participating teams" width="1400" height="788">
+    <video src="img/intro.mp4" poster="img/intro-poster.jpg" width="360" height="646" autoplay muted loop playsinline preload="auto" aria-label="Players trying a Muniac game on laptops at an event"></video>
+    <img src="img/still-1.webp" alt="Grammar rules on a lecture-room whiteboard" width="1280" height="720" decoding="async">
+    <img src="img/still-2.webp" decoding="async" alt="The Monarchs — MOG esports roster with Muniac" width="1400" height="788">
+    <img src="img/still-3.webp" loading="lazy" decoding="async" alt="MOG players spotlight: Muniac, captain" width="1120" height="1400">
+    <img src="img/still-4.webp" loading="lazy" decoding="async" alt="MOG matchday poster, ECS Division Three" width="1120" height="1400">
+    <img src="img/still-5.webp" loading="lazy" decoding="async" alt="NGFFC S4 poster: which team will win it all?" width="1120" height="1400">
+    <img src="img/still-6.webp" loading="lazy" decoding="async" alt="NGFFC S4 grand finals participating teams" width="1400" height="788">
   </div>
 
   <div class="wrap">
@@ -301,7 +303,7 @@ section.blk{padding:72px 0 8px}
     <div class="dtabs" role="navigation" aria-label="Documents"><a href="#resume" id="d-resume">Resume</a><a href="#cover-letter" id="d-cover-letter">Cover letter</a></div>
     <h1 id="dtitle">Resume</h1>
     <p class="dsub" id="dsub">Preview</p>
-    <div class="sheet-prev"><img id="dimg" src="docs/cv-preview.png" alt="" width="1240" height="1754"></div>
+    <div class="sheet-prev"><img id="dimg" alt="" width="1240" height="1754" decoding="async"></div>
     <div class="dl"><a class="visit" id="dlink" href="docs/Ochem-Michael-Munachi-Resume.pdf" download>Download PDF</a></div>
   </div>
 </main>
@@ -323,7 +325,7 @@ section.blk{padding:72px 0 8px}
       overview: ['A first-person 3D Nigerian horror escape game for phones and computers, published by Muniac Studios.', 'October 1997. Tobenna "Tobi" Adeleke goes back to his father\'s empty house on the hill at Oke-Ọla, twenty-two years to the night after his mother fled it with him. Something the hill children call Ojuju Calabar is still there. It doesn\'t want revenge. It wants its name and a burial.'],
       challenge: ['Make a full horror game that runs in a browser on an ordinary phone, rooted in Nigerian stories instead of borrowed ones.', ['Keep it light enough to load fast on mobile data: no heavy model or audio files.', 'Make it replayable, so walkthroughs and memorised speedruns don\'t spoil it.', 'Run a fair public leaderboard for a game anyone can open in a browser.']],
       solution: { text: ['Seven rooms and the roof, each with its own puzzle chain, scares, hints and journal. Fourteen memory pages and seven comic-strip memories tell the story, and the true ending needs all fourteen.', ['Runs on its own small WebGL engine. Every texture is painted in code and every sound is synthesised.', 'Every new game rolls its own puzzle answers: clock codes, music-box order, pounding rhythm, candle order.', 'NEPA takes light: in mains-lit rooms the power can cut, the generators start down the hill, and you play by torchlight until "Up NEPA!".', 'A live speedrun leaderboard on Supabase, with server checks on every run before it reaches the board.', 'Ships as a web game, an Android app and a CrazyGames build with opt-in ads only.']],
-        stills: [{ img: 'img/ojuju/title.jpg', cap: 'Title screen' }, { img: 'img/ojuju/loading.jpg', cap: 'Loading illustration' }, { img: 'img/ojuju/comic-calm.jpg', cap: 'Comic-strip memory' }, { img: 'img/ojuju/comic-pray.jpg', cap: 'Comic-strip memory' }] } },
+        stills: [{ img: 'img/ojuju/title.webp', cap: 'Title screen' }, { img: 'img/ojuju/loading.webp', cap: 'Loading illustration' }, { img: 'img/ojuju/comic-calm.webp', cap: 'Comic-strip memory' }, { img: 'img/ojuju/comic-pray.webp', cap: 'Comic-strip memory' }] } },
     { id: 'strikerank', name: 'StrikeRank', sub: 'Blood Strike team rank system', url: 'https://bsrankin.lovable.app',
       art: { bg: '#3a0d0d', win: '#111214', fg: '#f3f3f1', acc: '#ff3b30', k: 'Blood Strike stats', h: 'Prove your ego', s: 'Log matches, earn an Ego Score out of 10,000 and climb the live ladder.', b: 'View leaderboard', hs: 34 },
       overview: ['Michael built StrikeRank so the team could track everyone\'s strengths, weaknesses and performance across their Blood Strike game sessions, instead of guessing who was carrying and who needed work.', 'Players paste their scoreboard after a match and the site reads kills, assists, deaths, damage and placement. Every match feeds an Ego Score out of 10,000 and a live leaderboard.'],
@@ -373,12 +375,29 @@ section.blk{padding:72px 0 8px}
       '<span class="h" style="font-size:' + (big ? a.hs * 1.25 : a.hs) + 'px">' + esc(a.h) + '</span>' +
       '<span class="s">' + esc(a.s) + '</span>' +
       '<span class="btn" style="background:' + a.acc + ';color:' + (a.win === '#fbf8f2' || a.win === '#f4f1ea' ? '#fff' : '#fff') + '">' + esc(a.b) + '</span>' +
-      '</div>' + (LIVE && !noLive ? '<div class="live"><iframe src="' + esc(p.url) + '" title="' + esc(p.name) + ' — opening screen" loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe></div>' : '') +
+      '</div>' + (LIVE && !noLive ? '<div class="live"><iframe data-src="' + esc(p.url) + '" title="' + esc(p.name) + ' — opening screen" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe></div>' : '') +
       '</div></div>';
   }
 
   // Live site previews: real opening screens inside the window frame. Skipped when this page is itself framed (e.g. the Claude preview), where other sites can't load.
-  var LIVE = window.self === window.top;
+  var conn = navigator.connection || {};
+  var LIVE = window.self === window.top && !conn.saveData && !/(^|-)2g$/.test(conn.effectiveType || '');
+  // Live previews run whole websites (one is a WebGL game), so each frame only loads when it is near the screen
+  // and is emptied again once it is far away, which keeps the page light and scrolling smooth.
+  var near = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      var f = e.target;
+      if (e.isIntersecting) { if (!f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-src')); }
+      else if (f.getAttribute('src')) { f.removeAttribute('src'); f.classList.remove('on'); }
+    });
+  }, { rootMargin: '600px 0px' }) : null;
+  function watchFrames(root) {
+    root.querySelectorAll('iframe[data-src]').forEach(function (f) {
+      if (f._w) return; f._w = 1;
+      f.addEventListener('load', function () { if (f.getAttribute('src')) f.classList.add('on'); });
+      if (near) near.observe(f); else f.setAttribute('src', f.getAttribute('data-src'));
+    });
+  }
   var VW = 1280;
   function fitLive() {
     document.querySelectorAll('.live').forEach(function (box) {
@@ -390,7 +409,7 @@ section.blk{padding:72px 0 8px}
       f.style.transform = 'scale(' + k + ')';
     });
   }
-  window.addEventListener('resize', fitLive);
+  var fr = 0; window.addEventListener('resize', function () { cancelAnimationFrame(fr); fr = requestAnimationFrame(function () { fitLive(); if (!pv.hidden) fitStills(); fitBig(); }); });
 
   // Lists
   document.getElementById('plist').innerHTML = P.map(function (p) {
@@ -399,6 +418,7 @@ section.blk{padding:72px 0 8px}
   }).join('');
   document.getElementById('pcount').textContent = P.length;
   requestAnimationFrame(fitLive);
+  watchFrames(document.getElementById('plist'));
 
   // Project view
   var home = document.getElementById('home'), pv = document.getElementById('project');
@@ -415,6 +435,7 @@ section.blk{padding:72px 0 8px}
       '<section id="s-challenge"><h2>Challenge</h2>' + para(cur.challenge) + '</section>' +
       '<section id="s-solution"><h2>Solution</h2>' + para(cur.solution.text) + '<div class="stills">' + cur.solution.stills.map(still).join('') + '</div></section>';
     requestAnimationFrame(fitStills);
+    watchFrames(document.getElementById('project'));
     mark('overview');
   }
   function mark(t) {
@@ -445,8 +466,8 @@ section.blk{padding:72px 0 8px}
   }, { passive: true });
   function still(st) {
     var inner;
-    if (st.img) inner = '<img src="' + esc(st.img) + '" alt="' + esc(cur.name + ' — ' + st.cap) + '" loading="lazy">';
-    else if (LIVE) inner = '<div class="sframe" data-y="' + (st.y || 0) + '"><iframe src="' + esc(st.url) + '" title="' + esc(cur.name + ' — ' + st.cap) + '" loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe></div>';
+    if (st.img) inner = '<img src="' + esc(st.img) + '" alt="' + esc(cur.name + ' — ' + st.cap) + '" loading="lazy" decoding="async">';
+    else if (LIVE) inner = '<div class="sframe" data-y="' + (st.y || 0) + '"><iframe data-src="' + esc(st.url) + '" title="' + esc(cur.name + ' — ' + st.cap) + '" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe></div>';
     else inner = '<div class="sframe off"><span>' + esc(st.cap) + ' — live still shows on the published site</span></div>';
     return '<figure>' + inner + '<figcaption>' + esc(st.cap) + '</figcaption></figure>';
   }
@@ -460,7 +481,6 @@ section.blk{padding:72px 0 8px}
       f.style.transform = 'translateY(' + (-y * k) + 'px) scale(' + k + ')';
     });
   }
-  window.addEventListener('resize', function () { if (!pv.hidden) fitStills(); });
 
   function route() {
     var h = (location.hash || '').slice(1);
@@ -470,7 +490,7 @@ section.blk{padding:72px 0 8px}
       document.getElementById('dtitle').textContent = cv ? 'Resume' : 'Cover letter';
       document.getElementById('dsub').textContent = cv ? 'Preview of Michael\'s resume. Download the PDF below.' : 'Preview of Michael\'s cover letter. Download the PDF below.';
       var im = document.getElementById('dimg');
-      im.src = cv ? 'docs/cv-preview.png' : 'docs/cover-letter-preview.png';
+      im.src = cv ? 'docs/cv-preview.webp' : 'docs/cover-letter-preview.webp';
       im.alt = cv ? 'Resume of Ochem Michael Munachi' : 'Cover letter of Ochem Michael Munachi';
       var dl = document.getElementById('dlink');
       dl.href = cv ? 'docs/Ochem-Michael-Munachi-Resume.pdf' : 'docs/Ochem-Michael-Munachi-Cover-Letter.pdf';
@@ -493,6 +513,7 @@ section.blk{padding:72px 0 8px}
       renderAll();
       home.hidden = true; pv.hidden = false;
       fitLive();
+      watchFrames(document.getElementById('pvart'));
       window.scrollTo(0, 0);
     } else {
       document.title = 'Muniac — Ochem Michael Munachi';
@@ -515,7 +536,6 @@ section.blk{padding:72px 0 8px}
     if (w) p.style.fontSize = (100 * (document.documentElement.clientWidth - 6) / w) + 'px';
   }
   fitBig();
-  window.addEventListener('resize', fitBig);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBig);
 
   // Moments strip: drifts on its own, can be swiped by hand, and loops forever
@@ -523,10 +543,11 @@ section.blk{padding:72px 0 8px}
     var el = document.getElementById('peek');
     if (!el) return;
     var orig = Array.prototype.slice.call(el.children);
+    orig.forEach(function (n) { if (n.play) { n.muted = true; var pr = n.play(); if (pr && pr.catch) pr.catch(function () {}); } });
     for (var c = 0; c < 2; c++) orig.forEach(function (n) {
-      var k = n.cloneNode(true); k.setAttribute('aria-hidden', 'true'); k.alt = ''; k.removeAttribute('loading'); el.appendChild(k);
+      var k = n.cloneNode(true); k.setAttribute('aria-hidden', 'true'); if (k.tagName === 'IMG') k.alt = ''; else { k.removeAttribute('aria-label'); k.muted = true; } el.appendChild(k); if (k.play) { var pr = k.play(); if (pr && pr.catch) pr.catch(function () {}); }
     });
-    var setW = 0, pos = 0, held = false, resumeAt = 0, last = 0;
+    var setW = 0, pos = 0, held = false, resumeAt = 0, last = 0, onScreen = true, raf = 0;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var SPEED = 70; // px per second
     function measure() {
@@ -555,13 +576,20 @@ section.blk{padding:72px 0 8px}
     window.addEventListener('mousemove', function (e) { if (dragX === null) return; pos -= e.clientX - dragX; dragX = e.clientX; wrap(); el.scrollLeft = pos; });
     window.addEventListener('mouseup', function () { dragX = null; });
     function tick(t) {
+      raf = 0;
       var dt = last ? Math.min(t - last, 64) / 1000 : 0; last = t;
-      if (!reduce && !held && t > resumeAt && !document.hidden && setW) { pos += SPEED * dt; wrap(); el.scrollLeft = pos; }
-      requestAnimationFrame(tick);
+      if (!held && t > resumeAt && setW) { pos += SPEED * dt; wrap(); el.scrollLeft = pos; }
+      run();
     }
-    start(); requestAnimationFrame(tick);
-    window.addEventListener('load', function () { var r = (pos - setW) / (setW || 1); measure(); pos = setW + r * setW; el.scrollLeft = pos; });
-    window.addEventListener('resize', function () { var r = setW ? (pos - setW) / setW : 0; measure(); pos = setW + r * setW; el.scrollLeft = pos; });
+    // only animate while the strip is on screen and the tab is visible: saves battery and keeps scrolling smooth
+    function run() { if (!raf && !reduce && onScreen && !document.hidden && !el.closest('[hidden]')) raf = requestAnimationFrame(tick); else if (!raf) last = 0; }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { onScreen = es[0].isIntersecting; run(); }).observe(el);
+    document.addEventListener('visibilitychange', run);
+    window.addEventListener('hashchange', function () { setTimeout(run, 0); });
+    function remeasure() { var r = setW ? (pos - setW) / setW : 0; measure(); pos = setW + r * setW; el.scrollLeft = pos; }
+    start(); run();
+    window.addEventListener('load', remeasure);
+    var rz = 0; window.addEventListener('resize', function () { cancelAnimationFrame(rz); rz = requestAnimationFrame(remeasure); });
   })();
 
   // Menu
@@ -569,8 +597,8 @@ section.blk{padding:72px 0 8px}
   function setMenu(on) {
     ob.setAttribute('aria-expanded', on ? 'true' : 'false');
     document.body.classList.toggle('lock', on);
-    if (on) { menu.hidden = false; requestAnimationFrame(function () { menu.classList.add('open'); }); }
-    else { menu.classList.remove('open'); setTimeout(function () { if (!menu.classList.contains("open")) menu.hidden = true; }, 440); }
+    if (on) { menu.hidden = false; requestAnimationFrame(function () { menu.classList.add('open'); document.getElementById('closeMenu').focus({ preventScroll: true }); }); }
+    else { menu.classList.remove('open'); setTimeout(function () { if (!menu.classList.contains("open")) menu.hidden = true; }, 440); if (menu.contains(document.activeElement)) ob.focus({ preventScroll: true }); }
   }
   ob.addEventListener('click', function () { setMenu(true); });
   document.getElementById('closeMenu').addEventListener('click', function () { setMenu(false); });
