@@ -398,7 +398,7 @@ section.blk{padding:72px 0 8px}
     });
     var setW = 0, pos = 0, held = false, resumeAt = 0, last = 0;
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var SPEED = 32; // px per second
+    var SPEED = 70; // px per second
     function measure() {
       var gap = parseFloat(getComputedStyle(el).columnGap) || 12;
       setW = 0; orig.forEach(function (n) { setW += n.getBoundingClientRect().width + gap; });
