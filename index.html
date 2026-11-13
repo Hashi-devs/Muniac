@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muniac — Ochem Michael Munachi</title>
+<meta name="description" content="Ochem Michael Munachi (Muniac) — game and frontend developer. Games, 3D and websites, designed and built.">
+<meta property="og:title" content="Muniac — Ochem Michael Munachi">
+<meta property="og:description" content="Game and frontend developer. Games, 3D and websites, designed and built.">
+<meta name="theme-color" content="#0f0f10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f0f10'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='17' fill='%23c9a7f5' text-anchor='middle'%3Em%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:#0f0f10;color:#ededec;font-family:'Google Sans Flex','Google Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+a{color:inherit}
+[hidden]{display:none !important}
+h1,h2,h3,.gs{font-family:'Google Sans','Google Sans Flex',system-ui,sans-serif}
+:root{--bg:#0f0f10;--card:#18181a;--line:#262628;--fg:#ededec;--muted:#9a9a97;--soft:#6f6f6c;--hl:#3d2257;--hlfg:#f3e8ff}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:8px 16px;background:rgba(15,15,16,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.iconbtn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;background:none;border:0;color:var(--fg);cursor:pointer;border-radius:10px}
+.iconbtn:hover{background:#1c1c1e}
+.iconbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+.wm{justify-self:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:19px;letter-spacing:-.01em;text-decoration:none}
+.menu{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;padding:8px 16px 40px}
+.menu .top{display:grid;grid-template-columns:44px 1fr 44px;align-items:center}
+.menu nav{display:flex;flex-direction:column;margin:48px auto 0;width:100%;max-width:680px;padding:0 4px}
+.menu nav a{font-family:'Google Sans',sans-serif;font-size:44px;font-weight:500;letter-spacing:-.03em;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.menu nav a span{font-size:14px;color:var(--soft);font-weight:400;letter-spacing:0}
+.menu nav a:hover{color:#c9a7f5}
+
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+/* intro */
+.intro{padding:64px 0 24px}
+.who{display:flex;align-items:center;gap:22px;margin-bottom:34px}
+.avatar{width:92px;height:92px;flex:none;border-radius:14px;background:#f4f2ee;padding:4px;transform:rotate(-4deg);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.avatar .ph{width:100%;height:100%;border-radius:10px;background:#d9d5cc;display:flex;align-items:center;justify-content:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#6b675f}
+.who h1{margin:0;font-size:32px;font-weight:500;letter-spacing:-.025em;line-height:1.1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-family:'Google Sans Flex',sans-serif;font-size:15px;font-weight:400;letter-spacing:0;color:var(--muted);border:1px solid #333336;border-radius:999px;padding:2px 11px}
+.who p{margin:6px 0 0;color:var(--muted);font-size:18px}
+.intro p.t{font-size:20px;line-height:1.55;color:#b9b9b6;margin:0 0 18px}
+.hl{background:var(--hl);color:var(--hlfg);padding:0 3px;border-radius:3px;text-decoration:underline;text-decoration-color:rgba(243,232,255,.55);text-underline-offset:3px}
+.intro a.u{color:var(--fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.intro a.u:hover{color:#c9a7f5}
+
+/* home preview strip */
+.peek{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 20px 4px;margin:18px auto 0;max-width:720px;scrollbar-width:none}
+.peek::-webkit-scrollbar{display:none}
+.peek a{scroll-snap-align:center;display:block;text-decoration:none;border-radius:16px;overflow:hidden}
+.peek .shot{display:none}
+.peek .scr .h{font-size:24px !important}
+.peek .scr .s{display:none}
+
+/* section headings */
+.sh{font-size:24px;font-weight:500;letter-spacing:-.02em;margin:0 0 22px;display:flex;align-items:baseline;gap:10px}
+.sh .n{color:var(--soft);font-weight:400}
+section.blk{padding:72px 0 8px}
+
+/* project cards */
+.plist{display:flex;flex-direction:column;gap:30px}
+.pcard{display:block;text-decoration:none;color:var(--fg)}
+.art{position:relative;border-radius:16px;overflow:hidden;padding:36px 30px 0;aspect-ratio:16/12;display:flex;align-items:flex-end;transition:transform .35s ease}
+.pcard:hover .art{transform:scale(.985)}
+.win{width:100%;height:100%;border-radius:10px 10px 0 0;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.35);display:flex;flex-direction:column}
+.bar{height:22px;display:flex;align-items:center;gap:5px;padding:0 10px;flex:none}
+.bar i{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.35}
+.bar b{margin-left:10px;font-weight:400;font-size:9px;opacity:.55;font-family:'Google Sans Flex',sans-serif;letter-spacing:.02em}
+.scr{flex:1;padding:22px 22px 0;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.scr .k{font-size:9px;letter-spacing:.16em;text-transform:uppercase;opacity:.65}
+.scr .h{font-family:'Google Sans',sans-serif;font-weight:700;line-height:.98;letter-spacing:-.03em}
+.scr .s{font-size:11px;opacity:.7;max-width:70%}
+.scr .btn{align-self:flex-start;font-size:10px;padding:6px 12px;border-radius:999px;margin-top:4px}
+.shot{position:absolute;right:14px;bottom:10px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff}
+.cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-size:17px}
+.cap span:first-child{font-weight:500}
+.cap span:last-child{color:var(--muted);font-size:15px}
+
+/* experience */
+.xl{border-top:1px solid var(--line)}
+.xr{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:4px 14px;align-items:start;padding:18px 0;border-bottom:1px solid var(--line)}
+.logo{width:28px;height:28px;border-radius:50%;border:1px dashed #4a4a4d;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--soft);font-family:'Google Sans',sans-serif}
+.xr .co{font-family:'Google Sans',sans-serif;font-size:20px;font-weight:500;letter-spacing:-.01em;border-bottom:1px solid #3a3a3d;padding-bottom:2px}
+.xr .rl{display:block;color:var(--muted);font-size:16px;margin-top:6px}
+.xr .yr{color:var(--muted);font-size:15px;white-space:nowrap;padding-top:4px}
+
+/* tools & skills */
+.ts h3{font-size:20px;font-weight:500;margin:0 0 10px;letter-spacing:-.01em}
+.ts p{margin:0 0 30px;color:var(--muted);font-size:18px;line-height:1.7}
+.ts p .d{color:var(--soft);padding:0 6px}
+
+/* footer */
+.foot{margin-top:56px;border-top:1px solid var(--line);overflow:hidden}
+.frow{display:flex;justify-content:space-between;gap:16px;padding:26px 0 0;font-size:15px;color:var(--muted)}
+.flinks{display:flex;gap:22px;padding:14px 0 0;font-size:15px}
+.flinks a{color:var(--muted);text-decoration:none}
+.flinks a:hover{color:var(--fg)}
+.flinks .d{color:var(--soft)}
+.big{margin:24px 0 -1.6vw;padding:0 8px;font-family:'Google Sans',sans-serif;font-weight:700;font-size:21vw;line-height:.8;letter-spacing:-.06em;text-align:center;color:transparent;-webkit-text-stroke:1.5px #4a4a4d;white-space:nowrap;user-select:none}
+
+/* project view */
+.pv{padding-top:20px}
+.back{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--muted);text-decoration:none;font-size:16px}
+.back:hover{color:var(--fg)}
+.back svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pv h1{font-size:38px;font-weight:500;letter-spacing:-.03em;margin:22px 0 6px;line-height:1.05}
+.pv .meta{display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--muted);font-size:16px;margin-bottom:24px;flex-wrap:wrap}
+.visit{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 16px;border-radius:10px;background:#f1efea;color:#111;text-decoration:none;font-size:15px;font-weight:500}
+.visit:hover{background:#fff}
+.tabs{display:flex;gap:6px;margin:34px 0 0;border-bottom:1px solid var(--line)}
+.tab{min-height:44px;padding:0 14px;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font:inherit;font-size:16px;cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--fg);border-color:#c9a7f5}
+.tp{padding:24px 0 8px;font-size:18px;line-height:1.65;color:#c4c4c1}
+.tp p{margin:0 0 16px}
+.tp ul{margin:0 0 16px;padding-left:20px}
+.tp li{margin:6px 0}
+.cta{margin:48px 0 0;padding:28px 24px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.cta h2{margin:0 0 10px;font-size:26px;font-weight:500;letter-spacing:-.02em}
+.cta a{font-size:18px;color:#c9a7f5;text-decoration:none;word-break:break-all}
+.cta a:hover{text-decoration:underline;text-underline-offset:4px}
+
+@media (max-width:520px){
+  .intro{padding:44px 0 16px}
+  .who{gap:16px}
+  .avatar{width:76px;height:76px}
+  .who h1{font-size:26px}
+  .who p{font-size:16px}
+  .intro p.t{font-size:18px}
+  .art{padding:24px 18px 0}
+  .scr{padding:16px 14px 0}
+  .xr .co{font-size:18px}
+  .xr .yr{font-size:13px}
+  .ts p{font-size:16px}
+  .pv h1{font-size:30px}
+  .menu nav a{font-size:36px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.art{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <button class="iconbtn" id="openMenu" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>
+  <a class="wm" href="#top">Muniac</a>
+  <span></span>
+</header>
+
+<div class="menu" id="menu" hidden role="dialog" aria-label="Menu">
+  <div class="top">
+    <button class="iconbtn" id="closeMenu" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    <span class="wm" style="justify-self:center">Muniac</span><span></span>
+  </div>
+  <nav aria-label="Main">
+    <a href="#top" data-close>Home <span>01</span></a>
+    <a href="#projects" data-close>Projects <span>02</span></a>
+    <a href="#contact" data-close>Contact <span>03</span></a>
+  </nav>
+</div>
+
+<main id="home">
+  <div class="wrap">
+    <section class="intro" id="top" aria-label="Intro">
+      <div class="who">
+        <div class="avatar"><div class="ph">Photo</div></div>
+        <div>
+          <h1>Ochem Michael <span class="pill">muniac</span></h1>
+          <p>Game &amp; Frontend Developer</p>
+        </div>
+      </div>
+      <p class="t">I'm a developer who builds games and the web around them: 3D worlds, playable prototypes, and the sites that launch and support them. I work across frontend, Python and generative AI, and I ship with Claude Code and Codex so ideas get played, not just planned.</p>
+      <p class="t">On the side I'm building <span class="hl">Muniac Studios</span>, a game development company, and running <span class="hl">Monarchs of Gaming</span>, an esports organization.</p>
+      <p class="t">Have something in mind? Send a mail to <a class="u" href="mailto:munachiochem143@gmail.com">munachiochem143@gmail.com</a>. You can also find me on <a class="u" href="#contact">X (twitter)</a>.</p>
+    </section>
+  </div>
+  <div class="peek" id="peek" aria-label="Featured projects"></div>
+
+  <div class="wrap">
+    <section class="blk" id="projects" aria-labelledby="projects-h">
+      <h2 class="sh" id="projects-h">Projects <span class="n" id="pcount"></span></h2>
+      <div class="plist" id="plist"></div>
+    </section>
+
+    <section class="blk" id="experience" aria-labelledby="exp-h">
+      <h2 class="sh" id="exp-h">Experience <span class="n">4</span></h2>
+      <div class="xl">
+        <div class="xr"><span class="logo" aria-hidden="true">M</span><div><span class="co">Muniac Studios</span><span class="rl">Founder &amp; Developer</span></div><span class="yr">Oct 2026 — Present</span></div>
+        <div class="xr"><span class="logo" aria-hidden="true">H</span><div><span class="co">Harvest House</span><span class="rl">Frontend Intern</span></div><span class="yr">Jul — Nov 2026</span></div>
+        <div class="xr"><span class="logo" aria-hidden="true">M</span><div><span class="co">Monarchs of Gaming eSports</span><span class="rl">Captain &amp; Lead</span></div><span class="yr">Jan 2025 — Present</span></div>
+        <div class="xr"><span class="logo" aria-hidden="true">C</span><div><span class="co">Carry1st</span><span class="rl">LASU Community Manager</span></div><span class="yr">Nov 2024 — Present</span></div>
+      </div>
+    </section>
+
+    <section class="blk ts" id="tools" aria-label="Tools and skills">
+      <h3>Tools</h3>
+      <p>VS Code<span class="d">·</span>Codex<span class="d">·</span>Claude Code<span class="d">·</span>GitHub</p>
+      <h3>Skills</h3>
+      <p>Game Development<span class="d">·</span>3D Design<span class="d">·</span>Web Design<span class="d">·</span>Frontend Development<span class="d">·</span>Python<span class="d">·</span>Generative AI Engineering<span class="d">·</span>Community Management<span class="d">·</span>Leadership</p>
+    </section>
+  </div>
+</main>
+
+<main id="project" hidden>
+  <div class="wrap pv">
+    <a class="back" href="#projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>All projects</a>
+    <div id="pvart" style="margin-top:14px"></div>
+    <h1 id="pvtitle"></h1>
+    <div class="meta"><span id="pvsub"></span><a class="visit" id="pvlink" href="#" rel="noopener">Visit live site ↗</a></div>
+    <div class="tabs" role="tablist" aria-label="Case study">
+      <button class="tab" role="tab" id="t-overview" aria-controls="tp" aria-selected="true">Overview</button>
+      <button class="tab" role="tab" id="t-challenge" aria-controls="tp" aria-selected="false">Challenge</button>
+      <button class="tab" role="tab" id="t-outcome" aria-controls="tp" aria-selected="false">Outcome</button>
+    </div>
+    <div class="tp" id="tp" role="tabpanel"></div>
+    <div class="cta">
+      <h2>Want to work? Let's talk</h2>
+      <a href="mailto:munachiochem143@gmail.com">munachiochem143@gmail.com ↗</a>
+    </div>
+  </div>
+</main>
+
+<footer class="foot" id="contact">
+  <div class="wrap">
+    <div class="frow"><span>© Muniac '26</span><span>Made by Amuro</span></div>
+    <div class="flinks"><a href="mailto:munachiochem143@gmail.com">Email</a><span class="d">·</span><a href="#contact" title="X handle to be added">Twitter</a></div>
+  </div>
+  <p class="big" aria-hidden="true">@Muniac</p>
+</footer>
+
+<script>
+(function () {
+  // Project data. "art" fields style the placeholder screenshot until real screenshots are added.
+  var P = [
+    { id: 'ojuju-calabar', name: 'Ojuju Calabar', sub: 'Horror game · Muniac Studios', url: 'https://ojujucalabar.vercel.app/',
+      art: { bg: '#2a0f14', win: '#0c0a11', fg: '#e9dcd2', acc: '#b3261e', k: 'Muniac Studios presents', h: 'Something is calling your name', s: "Don't move. Don't answer.", b: 'Tap to enter', hs: 30 },
+      overview: ['A mobile-first horror game set in Calabar, published under Muniac Studios. It opens on a title screen, then pulls the player into a haunted, Nigerian-themed space where the rule is simple: don\'t move, don\'t answer.', 'It runs in the browser as a full-screen web app, so anyone can play it from a link.'],
+      challenge: ['Make horror work on a phone, in a browser, without an app store.', ['Hold the mood on a small screen with sound, pacing and darkness instead of big set pieces.', 'Handle landscape vs portrait: the game asks to be played sideways but still lets players stay upright.', 'Keep progress so a session can be interrupted and picked back up.']],
+      outcome: ['A playable, installable web game with a title screen, orientation prompt, skippable intro and saved progress, and a Nigerian folklore setting that gives it its own identity.'] },
+    { id: 'strikerank', name: 'StrikeRank', sub: 'Blood Strike team rank system', url: 'https://bsrankin.lovable.app',
+      art: { bg: '#3a0d0d', win: '#111214', fg: '#f3f3f1', acc: '#ff3b30', k: 'Blood Strike stats', h: 'Prove your ego', s: 'Log matches, earn an Ego Score out of 10,000 and climb the live ladder.', b: 'View leaderboard', hs: 34 },
+      overview: ['An unofficial stat tracker for the mobile shooter Blood Strike. Players paste their scoreboard, the site reads kills, assists, deaths, damage and placement, and every match feeds an Ego Score out of 10,000 and a live global leaderboard.', 'Pages: Home, Leaderboard, Players, Compare and About, plus an admin login for moderators.'],
+      challenge: ['Build a rating that rewards playing well, not just playing a lot, and keep it honest.', ['Weight averages, win rate, consistency and recent form so grinding games barely moves the score.', 'Flag impossible stats and block duplicate submissions.', 'Give moderators a way to reject bad entries.']],
+      outcome: ['A live ranking system with match logging, rank-up and rank-down movement on the ladder, player comparison, and built-in anti-cheat checks — made for the community Michael captains in.'] },
+    { id: 'lumina', name: 'Lumina', sub: 'Creative studio website', url: 'https://muni1.netlify.app/',
+      art: { bg: '#d9531e', win: '#0d0d0d', fg: '#f4efe8', acc: '#ff7a3d', k: 'Independent creative studio', h: 'We make brands matter.', s: 'Bold identities, immersive websites and digital experiences.', b: 'Explore work', hs: 32 },
+      overview: ['A website for Lumina, an independent creative studio in Lagos working worldwide. It sells the studio through its services, selected work and process.'],
+      challenge: ['Make a studio site feel bold and motion-led while still answering the questions clients actually ask.', ['Hero, about with studio stats, five services, three case studies, a four-step process, testimonial, FAQ and contact — in one scroll.']],
+      outcome: ['A complete studio site with a clear path from "who are you" to "let\'s talk": services, selected work, process, FAQ and a contact section with email and socials.'] },
+    { id: 'nexora', name: 'Nexora', sub: 'SaaS landing page', url: 'https://munisaas.netlify.app/',
+      art: { bg: '#1b3fd1', win: '#0b1020', fg: '#eef2ff', acc: '#6d8bff', k: 'For teams', h: 'Build Smarter. Launch Faster.', s: 'Collaborate, automate workflows and scale with confidence.', b: 'Start free trial', hs: 30 },
+      overview: ['A marketing landing page for Nexora, a SaaS platform that helps teams collaborate, automate workflows and scale. Everything points to a 14-day free trial.'],
+      challenge: ['Turn visitors into trial users with a page that explains the product fast.', ['Hero with a mock analytics dashboard, logo strip, four feature blocks and a product section.', 'Monthly / yearly pricing toggle across three plans.', 'Testimonials, FAQ and a final call to action.']],
+      outcome: ['A conversion-focused SaaS page with pricing, social proof and product previews, built to the standard of a real launch page.'] },
+    { id: 'haven-estates', name: 'Haven Estates', sub: 'Real estate website', url: 'https://muniestates.netlify.app/',
+      art: { bg: '#2f4a3a', win: '#f4f1ea', fg: '#1d2a22', acc: '#2f4a3a', k: 'Ikoyi, Lagos', h: 'Find a place that feels entirely yours.', s: 'Homes, apartments and villas curated for modern living.', b: 'Explore properties', hs: 28 },
+      overview: ['A website for Haven Estates, a Lagos real estate agency selling and renting luxury homes, apartments and villas, with a personal, advisory feel.'],
+      challenge: ['Make browsing homes feel calm and considered, not like a listings dump.', ['Buy / rent / sell search with location and property type.', 'Featured listings, categories, locations across five cities, team profile and client stories.']],
+      outcome: ['A refined property site that moves people from search to a private viewing, with an enquiry form and direct contact details.'] },
+    { id: 'jca-store', name: 'JCA Store', sub: 'E-commerce store', url: 'https://moggingchinaza.netlify.app/',
+      art: { bg: '#e8dfcf', win: '#fbf8f2', fg: '#1d1b17', acc: '#1d1b17', k: 'Everyday, elevated', h: 'Good things for everyday living.', s: 'Fashion, accessories, tech and home — carefully chosen.', b: 'Shop the collection', hs: 30 },
+      overview: ['An online store for JCA, selling curated fashion, accessories, practical tech and home items, with delivery across Nigeria.'],
+      challenge: ['Build a full shopping flow, not just a product page.', ['Product grid with category filters.', 'A slide-out bag with subtotal, then a checkout form with delivery details.', 'Newsletter sign-up and a contact form.']],
+      outcome: ['A working storefront from browse to checkout, with a clean, minimal style that matches the "Everyday, elevated" brand.'] },
+    { id: 'oja', name: 'Oja', sub: 'Restaurant website', url: 'https://munisturant.netlify.app/',
+      art: { bg: '#a8431f', win: '#1a120d', fg: '#f6eadb', acc: '#e8a33d', k: 'A Lagos table', h: 'Come hungry. Leave with a story.', s: 'Nigerian ingredients, fire and generous hospitality.', b: 'Book a table', hs: 30 },
+      overview: ['A website for Oja, a modern Nigerian restaurant on Victoria Island, Lagos. It shows the menu and weekly events and gets people to book a table.'],
+      challenge: ['Capture the energy of a Lagos restaurant and make booking easy.', ['Our story, menu, private gatherings and a "this week" events list.', 'A reservation form for party size, date and time, with a separate route for large groups.']],
+      outcome: ['A lively restaurant site with a working booking flow, events and visit details, written in a playful voice that fits the brand.'] }
+  ];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function art(p, big) {
+    var a = p.art, host = p.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    return '<div class="art" style="background:' + a.bg + '">' +
+      '<div class="win" style="background:' + a.win + ';color:' + a.fg + '">' +
+      '<div class="bar"><i></i><i></i><i></i><b>' + esc(host) + '</b></div>' +
+      '<div class="scr"><span class="k">' + esc(a.k) + '</span>' +
+      '<span class="h" style="font-size:' + (big ? a.hs * 1.25 : a.hs) + 'px">' + esc(a.h) + '</span>' +
+      '<span class="s">' + esc(a.s) + '</span>' +
+      '<span class="btn" style="background:' + a.acc + ';color:' + (a.win === '#fbf8f2' || a.win === '#f4f1ea' ? '#fff' : '#fff') + '">' + esc(a.b) + '</span>' +
+      '<span class="shot">Screenshot to come</span></div></div></div>';
+  }
+
+  // Lists
+  document.getElementById('plist').innerHTML = P.map(function (p) {
+    return '<a class="pcard" href="#p-' + p.id + '" aria-label="' + esc(p.name) + ' — open project">' + art(p) +
+      '<div class="cap"><span>' + esc(p.name) + '</span><span>2026</span></div></a>';
+  }).join('');
+  document.getElementById('pcount').textContent = P.length;
+  document.getElementById('peek').innerHTML = P.slice(0, 3).map(function (p) {
+    return '<a href="#p-' + p.id + '" aria-label="' + esc(p.name) + '">' + art(p) + '</a>';
+  }).join('');
+
+  // Project view
+  var home = document.getElementById('home'), pv = document.getElementById('project');
+  var cur = null, tab = 'overview';
+  function renderTab() {
+    var d = cur[tab], html = '';
+    d.forEach(function (x) {
+      if (Array.isArray(x)) html += '<ul>' + x.map(function (li) { return '<li>' + esc(li) + '</li>'; }).join('') + '</ul>';
+      else html += '<p>' + esc(x) + '</p>';
+    });
+    document.getElementById('tp').innerHTML = html;
+    ['overview', 'challenge', 'outcome'].forEach(function (t) {
+      document.getElementById('t-' + t).setAttribute('aria-selected', t === tab ? 'true' : 'false');
+    });
+  }
+  ['overview', 'challenge', 'outcome'].forEach(function (t) {
+    document.getElementById('t-' + t).addEventListener('click', function () { tab = t; renderTab(); });
+  });
+
+  function route() {
+    var h = (location.hash || '').slice(1);
+    var m = h.indexOf('p-') === 0 ? P.filter(function (p) { return 'p-' + p.id === h; })[0] : null;
+    if (m) {
+      cur = m; tab = 'overview';
+      document.getElementById('pvart').innerHTML = art(m, true);
+      document.getElementById('pvtitle').textContent = m.name;
+      document.getElementById('pvsub').textContent = m.sub + ' · 2026';
+      document.getElementById('pvlink').href = m.url;
+      document.title = m.name + ' — Muniac';
+      renderTab();
+      home.hidden = true; pv.hidden = false;
+      window.scrollTo(0, 0);
+    } else {
+      document.title = 'Muniac — Ochem Michael Munachi';
+      var wasHidden = home.hidden;
+      home.hidden = false; pv.hidden = true;
+      var el = h && document.getElementById(h);
+      if (el) { if (wasHidden) setTimeout(function () { el.scrollIntoView(); }, 0); }
+      else if (wasHidden) window.scrollTo(0, 0);
+    }
+  }
+  window.addEventListener('hashchange', route);
+  route();
+
+  // Menu
+  var menu = document.getElementById('menu'), ob = document.getElementById('openMenu');
+  function setMenu(on) { menu.hidden = !on; ob.setAttribute('aria-expanded', on ? 'true' : 'false'); }
+  ob.addEventListener('click', function () { setMenu(true); });
+  document.getElementById('closeMenu').addEventListener('click', function () { setMenu(false); });
+  menu.querySelectorAll('[data-close]').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+})();
+</script>
+</body>
+</html>
