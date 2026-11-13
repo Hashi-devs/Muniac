@@ -55,11 +55,9 @@ body.lock{overflow:hidden}
 .intro a.u:hover{color:#c9a7f5}
 
 /* home preview strip */
-.peek{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 20px 4px;margin:18px auto 0;max-width:720px;scrollbar-width:none}
+.peek{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 20px 4px;margin:18px auto 0;max-width:720px;scrollbar-width:none;scroll-padding:0 20px}
+.peek img{flex:none;height:340px;width:auto;border-radius:16px;scroll-snap-align:start;background:#1a1a1c;object-fit:cover}
 .peek::-webkit-scrollbar{display:none}
-.peek a{scroll-snap-align:center;display:block;text-decoration:none;border-radius:16px;overflow:hidden}
-.peek .scr .h{font-size:24px !important}
-.peek .scr .s{display:none}
 
 /* section headings */
 .sh{font-size:24px;font-weight:500;letter-spacing:-.02em;margin:0 0 22px;display:flex;align-items:baseline;gap:10px}
@@ -141,6 +139,7 @@ section.blk{padding:72px 0 8px}
   .who p{font-size:16px}
   .intro p.t{font-size:18px}
   .art{padding:24px 18px 0}
+  .peek img{height:280px}
   .scr{padding:16px 14px 0}
   .xr .co{font-size:18px}
   .xr .yr{font-size:13px}
@@ -186,7 +185,15 @@ section.blk{padding:72px 0 8px}
       <p class="t">Have something in mind? Send a mail to <a class="u" href="mailto:munachiochem143@gmail.com">munachiochem143@gmail.com</a>. You can also find me on <a class="u" href="#contact">X (twitter)</a>.</p>
     </section>
   </div>
-  <div class="peek" id="peek" aria-label="Featured projects"></div>
+  <div class="peek" aria-label="Moments">
+    <img src="img/intro.gif" alt="Players trying a Muniac game on laptops at an event" width="300" height="538">
+    <img src="img/still-1.jpg" alt="Grammar rules on a lecture-room whiteboard" width="1280" height="720" loading="lazy">
+    <img src="img/still-2.jpg" alt="The Monarchs — MOG esports roster with Muniac" width="1400" height="788" loading="lazy">
+    <img src="img/still-3.jpg" alt="MOG players spotlight: Muniac, captain" width="1120" height="1400" loading="lazy">
+    <img src="img/still-4.jpg" alt="MOG matchday poster, ECS Division Three" width="1120" height="1400" loading="lazy">
+    <img src="img/still-5.jpg" alt="NGFFC S4 poster: which team will win it all?" width="1120" height="1400" loading="lazy">
+    <img src="img/still-6.jpg" alt="NGFFC S4 grand finals participating teams" width="1400" height="788" loading="lazy">
+  </div>
 
   <div class="wrap">
     <section class="blk" id="projects" aria-labelledby="projects-h">
@@ -321,9 +328,6 @@ section.blk{padding:72px 0 8px}
   }).join('');
   document.getElementById('pcount').textContent = P.length;
   requestAnimationFrame(fitLive);
-  document.getElementById('peek').innerHTML = P.slice(0, 3).map(function (p) {
-    return '<a href="#p-' + p.id + '" aria-label="' + esc(p.name) + '">' + art(p, false, true) + '</a>';
-  }).join('');
 
   // Project view
   var home = document.getElementById('home'), pv = document.getElementById('project');
