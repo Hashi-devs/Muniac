@@ -384,18 +384,28 @@ section.blk{padding:72px 0 8px}
   var LIVE = window.self === window.top && !conn.saveData && !/(^|-)2g$/.test(conn.effectiveType || '');
   // Live previews run whole websites (one is a WebGL game), so each frame only loads when it is near the screen
   // and is emptied again once it is far away, which keeps the page light and scrolling smooth.
+  // A fresh iframe is swapped in (with its address already set) instead of changing the address of one on the page:
+  // changing it would add a step to the browser's back history every time a preview loads.
+  function swap(f, on) {
+    var n = f.cloneNode(false);
+    n.classList.remove('on');
+    if (on) { n.setAttribute('src', f.getAttribute('data-src')); n.addEventListener('load', function () { n.classList.add('on'); }); }
+    else n.removeAttribute('src');
+    f.parentNode.replaceChild(n, f);
+  }
   var near = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
     es.forEach(function (e) {
-      var f = e.target;
-      if (e.isIntersecting) { if (!f.getAttribute('src')) f.setAttribute('src', f.getAttribute('data-src')); }
-      else if (f.getAttribute('src')) { f.removeAttribute('src'); f.classList.remove('on'); }
+      var f = e.target.querySelector('iframe');
+      if (!f) return;
+      if (e.isIntersecting) { if (!f.getAttribute('src')) swap(f, true); }
+      else if (f.getAttribute('src')) swap(f, false);
     });
   }, { rootMargin: '600px 0px' }) : null;
   function watchFrames(root) {
     root.querySelectorAll('iframe[data-src]').forEach(function (f) {
-      if (f._w) return; f._w = 1;
-      f.addEventListener('load', function () { if (f.getAttribute('src')) f.classList.add('on'); });
-      if (near) near.observe(f); else f.setAttribute('src', f.getAttribute('data-src'));
+      var box = f.parentNode;
+      if (box._w) return; box._w = 1;
+      if (near) near.observe(box); else swap(f, true);
     });
   }
   var VW = 1280;
@@ -482,7 +492,11 @@ section.blk{padding:72px 0 8px}
     });
   }
 
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  var homeY = 0;
+  function jump(y) { window.scrollTo({ top: y, left: 0, behavior: 'instant' }); }
   function route() {
+    if (!home.hidden) homeY = window.scrollY;
     var h = (location.hash || '').slice(1);
     var dv = document.getElementById('docview');
     if (h === 'resume' || h === 'cover-letter') {
@@ -498,7 +512,7 @@ section.blk{padding:72px 0 8px}
       document.getElementById('d-cover-letter').setAttribute('aria-current', cv ? 'false' : 'page');
       document.title = (cv ? 'Resume' : 'Cover letter') + ' — Muniac';
       home.hidden = true; pv.hidden = true; dv.hidden = false;
-      window.scrollTo(0, 0);
+      jump(0);
       return;
     }
     dv.hidden = true;
@@ -514,15 +528,15 @@ section.blk{padding:72px 0 8px}
       home.hidden = true; pv.hidden = false;
       fitLive();
       watchFrames(document.getElementById('pvart'));
-      window.scrollTo(0, 0);
+      jump(0);
     } else {
       document.title = 'Muniac — Ochem Michael Munachi';
       var wasHidden = home.hidden;
       home.hidden = false; pv.hidden = true;
       requestAnimationFrame(fitLive);
       var el = h && document.getElementById(h);
-      if (el) { if (wasHidden) setTimeout(function () { el.scrollIntoView(); }, 0); }
-      else if (wasHidden) window.scrollTo(0, 0);
+      if (el) { if (wasHidden) requestAnimationFrame(function () { el.scrollIntoView({ behavior: 'instant', block: 'start' }); }); }
+      else if (wasHidden) requestAnimationFrame(function () { jump(homeY); });
     }
   }
   window.addEventListener('hashchange', route);
@@ -594,15 +608,28 @@ section.blk{padding:72px 0 8px}
 
   // Menu
   var menu = document.getElementById('menu'), ob = document.getElementById('openMenu');
+  var layer = false;
+  window.addEventListener('popstate', function () { if (layer) { layer = false; setMenu(false); } });
   function setMenu(on) {
     ob.setAttribute('aria-expanded', on ? 'true' : 'false');
     document.body.classList.toggle('lock', on);
-    if (on) { menu.hidden = false; requestAnimationFrame(function () { menu.classList.add('open'); document.getElementById('closeMenu').focus({ preventScroll: true }); }); }
-    else { menu.classList.remove('open'); setTimeout(function () { if (!menu.classList.contains("open")) menu.hidden = true; }, 440); if (menu.contains(document.activeElement)) ob.focus({ preventScroll: true }); }
+    if (on) { if (!layer) { layer = true; try { history.pushState({ layer: 'menu' }, ''); } catch (e) {} } menu.hidden = false; requestAnimationFrame(function () { menu.classList.add('open'); document.getElementById('closeMenu').focus({ preventScroll: true }); }); }
+    else { if (layer) { layer = false; if (history.state && history.state.layer === 'menu') history.back(); } menu.classList.remove('open'); setTimeout(function () { if (!menu.classList.contains("open")) menu.hidden = true; }, 440); if (menu.contains(document.activeElement)) ob.focus({ preventScroll: true }); }
   }
   ob.addEventListener('click', function () { setMenu(true); });
   document.getElementById('closeMenu').addEventListener('click', function () { setMenu(false); });
-  menu.querySelectorAll('[data-close]').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  menu.querySelectorAll('[data-close]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var href = a.getAttribute('href');
+      if (!href || !layer) { setMenu(false); return; }
+      // swap the menu's history step for the destination, so back goes to where you were, not to the menu
+      e.preventDefault(); layer = false; setMenu(false);
+      try { history.replaceState(null, '', href); } catch (er) { location.hash = href; return; }
+      route();
+      var el = document.getElementById(href.slice(1));
+      if (el && !home.hidden) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
 })();
 </script>
