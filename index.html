@@ -60,8 +60,8 @@ body.lock{overflow:hidden}
 .intro a.u:hover{color:#c9a7f5}
 
 /* home preview strip */
-.peek{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 20px 4px;margin:18px auto 0;max-width:720px;scrollbar-width:none;scroll-padding:0 20px}
-.peek img{flex:none;height:340px;width:auto;border-radius:16px;scroll-snap-align:start;background:#1a1a1c;object-fit:cover}
+.peek{display:flex;gap:12px;overflow-x:auto;padding:12px 0 4px;margin:18px 0 0;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;cursor:grab}
+.peek img{flex:none;height:340px;width:auto;border-radius:16px;user-select:none;-webkit-user-drag:none;background:#1a1a1c;object-fit:cover}
 .peek::-webkit-scrollbar{display:none}
 
 /* section headings */
@@ -192,14 +192,14 @@ section.blk{padding:72px 0 8px}
       <p class="t">Have something in mind? Send a mail to <a class="u" href="mailto:munachiochem143@gmail.com">munachiochem143@gmail.com</a>. You can also find me on <a class="u" href="https://x.com/Muniac12" rel="noopener">X (twitter)</a>.</p>
     </section>
   </div>
-  <div class="peek" aria-label="Moments">
+  <div class="peek" id="peek" aria-label="Moments">
     <img src="img/intro.gif" alt="Players trying a Muniac game on laptops at an event" width="300" height="538">
-    <img src="img/still-1.jpg" alt="Grammar rules on a lecture-room whiteboard" width="1280" height="720" loading="lazy">
-    <img src="img/still-2.jpg" alt="The Monarchs — MOG esports roster with Muniac" width="1400" height="788" loading="lazy">
-    <img src="img/still-3.jpg" alt="MOG players spotlight: Muniac, captain" width="1120" height="1400" loading="lazy">
-    <img src="img/still-4.jpg" alt="MOG matchday poster, ECS Division Three" width="1120" height="1400" loading="lazy">
-    <img src="img/still-5.jpg" alt="NGFFC S4 poster: which team will win it all?" width="1120" height="1400" loading="lazy">
-    <img src="img/still-6.jpg" alt="NGFFC S4 grand finals participating teams" width="1400" height="788" loading="lazy">
+    <img src="img/still-1.jpg" alt="Grammar rules on a lecture-room whiteboard" width="1280" height="720">
+    <img src="img/still-2.jpg" alt="The Monarchs — MOG esports roster with Muniac" width="1400" height="788">
+    <img src="img/still-3.jpg" alt="MOG players spotlight: Muniac, captain" width="1120" height="1400">
+    <img src="img/still-4.jpg" alt="MOG matchday poster, ECS Division Three" width="1120" height="1400">
+    <img src="img/still-5.jpg" alt="NGFFC S4 poster: which team will win it all?" width="1120" height="1400">
+    <img src="img/still-6.jpg" alt="NGFFC S4 grand finals participating teams" width="1400" height="788">
   </div>
 
   <div class="wrap">
@@ -387,6 +387,52 @@ section.blk{padding:72px 0 8px}
   fitBig();
   window.addEventListener('resize', fitBig);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBig);
+
+  // Moments strip: drifts on its own, can be swiped by hand, and loops forever
+  (function () {
+    var el = document.getElementById('peek');
+    if (!el) return;
+    var orig = Array.prototype.slice.call(el.children);
+    for (var c = 0; c < 2; c++) orig.forEach(function (n) {
+      var k = n.cloneNode(true); k.setAttribute('aria-hidden', 'true'); k.alt = ''; k.removeAttribute('loading'); el.appendChild(k);
+    });
+    var setW = 0, pos = 0, held = false, resumeAt = 0, last = 0;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var SPEED = 32; // px per second
+    function measure() {
+      var gap = parseFloat(getComputedStyle(el).columnGap) || 12;
+      setW = 0; orig.forEach(function (n) { setW += n.getBoundingClientRect().width + gap; });
+    }
+    function wrap() {
+      if (!setW) return;
+      if (pos < setW * 0.5) pos += setW;
+      else if (pos > setW * 1.5) pos -= setW;
+    }
+    function start() { measure(); pos = setW; el.scrollLeft = pos; }
+    function pause() { held = true; }
+    function release() { held = false; resumeAt = performance.now() + 2500; }
+    el.addEventListener('pointerdown', pause);
+    el.addEventListener('touchstart', pause, { passive: true });
+    window.addEventListener('pointerup', release);
+    el.addEventListener('touchend', release, { passive: true });
+    el.addEventListener('wheel', function () { resumeAt = performance.now() + 2500; }, { passive: true });
+    el.addEventListener('scroll', function () {
+      if (Math.abs(el.scrollLeft - pos) > 1) { pos = el.scrollLeft; wrap(); if (Math.abs(el.scrollLeft - pos) > 1) el.scrollLeft = pos; }
+    }, { passive: true });
+    // drag with a mouse on desktop
+    var dragX = null;
+    el.addEventListener('mousedown', function (e) { dragX = e.clientX; e.preventDefault(); });
+    window.addEventListener('mousemove', function (e) { if (dragX === null) return; pos -= e.clientX - dragX; dragX = e.clientX; wrap(); el.scrollLeft = pos; });
+    window.addEventListener('mouseup', function () { dragX = null; });
+    function tick(t) {
+      var dt = last ? Math.min(t - last, 64) / 1000 : 0; last = t;
+      if (!reduce && !held && t > resumeAt && !document.hidden && setW) { pos += SPEED * dt; wrap(); el.scrollLeft = pos; }
+      requestAnimationFrame(tick);
+    }
+    start(); requestAnimationFrame(tick);
+    window.addEventListener('load', function () { var r = (pos - setW) / (setW || 1); measure(); pos = setW + r * setW; el.scrollLeft = pos; });
+    window.addEventListener('resize', function () { var r = setW ? (pos - setW) / setW : 0; measure(); pos = setW + r * setW; el.scrollLeft = pos; });
+  })();
 
   // Menu
   var menu = document.getElementById('menu'), ob = document.getElementById('openMenu');
