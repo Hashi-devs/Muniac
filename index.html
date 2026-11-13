@@ -28,12 +28,15 @@ h1,h2,h3,.gs{font-family:'Google Sans','Google Sans Flex',system-ui,sans-serif}
 .iconbtn:hover{background:#1c1c1e}
 .iconbtn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
 .wm{justify-self:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:19px;letter-spacing:-.01em;text-decoration:none}
-.menu{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;flex-direction:column;padding:8px 16px 40px}
-.menu .top{display:grid;grid-template-columns:44px 1fr 44px;align-items:center}
-.menu nav{display:flex;flex-direction:column;margin:48px auto 0;width:100%;max-width:680px;padding:0 4px}
-.menu nav a{font-family:'Google Sans',sans-serif;font-size:44px;font-weight:500;letter-spacing:-.03em;text-decoration:none;padding:10px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
-.menu nav a span{font-size:14px;color:var(--soft);font-weight:400;letter-spacing:0}
+.menu{position:fixed;inset:0;z-index:40}
+.scrim{position:absolute;inset:0;background:rgba(8,8,9,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .3s ease}
+.drawer{position:absolute;top:0;left:0;bottom:0;width:50%;min-width:240px;max-width:420px;background:var(--bg);border-right:1px solid var(--line);padding:8px 16px 32px;display:flex;flex-direction:column;transform:translateX(-102%);transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+.menu.open .scrim{opacity:1}
+.menu.open .drawer{transform:none}
+.menu nav{display:flex;flex-direction:column;margin-top:36px}
+.menu nav a{font-family:'Google Sans',sans-serif;font-size:32px;font-weight:500;letter-spacing:-.025em;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line)}
 .menu nav a:hover{color:#c9a7f5}
+body.lock{overflow:hidden}
 
 .wrap{max-width:680px;margin:0 auto;padding:0 20px}
 
@@ -55,7 +58,6 @@ h1,h2,h3,.gs{font-family:'Google Sans','Google Sans Flex',system-ui,sans-serif}
 .peek{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 20px 4px;margin:18px auto 0;max-width:720px;scrollbar-width:none}
 .peek::-webkit-scrollbar{display:none}
 .peek a{scroll-snap-align:center;display:block;text-decoration:none;border-radius:16px;overflow:hidden}
-.peek .shot{display:none}
 .peek .scr .h{font-size:24px !important}
 .peek .scr .s{display:none}
 
@@ -78,7 +80,9 @@ section.blk{padding:72px 0 8px}
 .scr .h{font-family:'Google Sans',sans-serif;font-weight:700;line-height:.98;letter-spacing:-.03em}
 .scr .s{font-size:11px;opacity:.7;max-width:70%}
 .scr .btn{align-self:flex-start;font-size:10px;padding:6px 12px;border-radius:999px;margin-top:4px}
-.shot{position:absolute;right:14px;bottom:10px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,.45);color:#fff}
+.win{position:relative}
+.live{position:absolute;left:0;right:0;top:22px;bottom:0;overflow:hidden;background:inherit}
+.live iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none;background:#fff}
 .cap{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-size:17px}
 .cap span:first-child{font-weight:500}
 .cap span:last-child{color:var(--muted);font-size:15px}
@@ -100,11 +104,13 @@ section.blk{padding:72px 0 8px}
 /* footer */
 .foot{margin-top:56px;border-top:1px solid var(--line);overflow:hidden}
 .frow{display:flex;justify-content:space-between;gap:16px;padding:26px 0 0;font-size:15px;color:var(--muted)}
-.flinks{display:flex;gap:22px;padding:14px 0 0;font-size:15px}
-.flinks a{color:var(--muted);text-decoration:none}
-.flinks a:hover{color:var(--fg)}
-.flinks .d{color:var(--soft)}
-.big{margin:24px 0 -1.6vw;padding:0 8px;font-family:'Google Sans',sans-serif;font-weight:700;font-size:21vw;line-height:.8;letter-spacing:-.06em;text-align:center;color:transparent;-webkit-text-stroke:1.5px #4a4a4d;white-space:nowrap;user-select:none}
+.flinks{display:flex;gap:6px;padding:10px 0 0;margin-left:-10px}
+.ico{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:var(--muted);border-radius:10px}
+.ico:hover{color:var(--fg);background:#1c1c1e}
+.ico svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ico svg.fill{fill:currentColor;stroke:none;width:19px;height:19px}
+.big{margin:28px 0 0;padding:0;font-family:'Google Sans',sans-serif;font-weight:700;font-size:22vw;line-height:.74;letter-spacing:-.05em;text-align:center;color:transparent;-webkit-text-stroke:1.5px #4a4a4d;white-space:nowrap;user-select:none;overflow:hidden}
+.big span{display:inline-block;margin-bottom:-.05em}
 
 /* project view */
 .pv{padding-top:20px}
@@ -140,7 +146,7 @@ section.blk{padding:72px 0 8px}
   .xr .yr{font-size:13px}
   .ts p{font-size:16px}
   .pv h1{font-size:30px}
-  .menu nav a{font-size:36px}
+  .menu nav a{font-size:26px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.art{transition:none}}
 </style>
@@ -153,16 +159,16 @@ section.blk{padding:72px 0 8px}
   <span></span>
 </header>
 
-<div class="menu" id="menu" hidden role="dialog" aria-label="Menu">
-  <div class="top">
+<div class="menu" id="menu" hidden role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="scrim" data-close></div>
+  <div class="drawer">
     <button class="iconbtn" id="closeMenu" aria-label="Close menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
-    <span class="wm" style="justify-self:center">Muniac</span><span></span>
+    <nav aria-label="Main">
+      <a href="#top" data-close>Home</a>
+      <a href="#projects" data-close>Projects</a>
+      <a href="#contact" data-close>Contact</a>
+    </nav>
   </div>
-  <nav aria-label="Main">
-    <a href="#top" data-close>Home <span>01</span></a>
-    <a href="#projects" data-close>Projects <span>02</span></a>
-    <a href="#contact" data-close>Contact <span>03</span></a>
-  </nav>
 </div>
 
 <main id="home">
@@ -171,8 +177,8 @@ section.blk{padding:72px 0 8px}
       <div class="who">
         <div class="avatar"><img src="img/michael.jpg" alt="Ochem Michael Munachi" width="240" height="240"></div>
         <div>
-          <h1>Ochem Michael <span class="pill">muniac</span></h1>
-          <p>Game &amp; Frontend Developer</p>
+          <h1>Ochem Michael</h1>
+          <p>Game &amp; Web Developer</p>
         </div>
       </div>
       <p class="t">I'm a developer who builds games and the web around them: 3D worlds, playable prototypes, and the sites that launch and support them. I work across frontend, Python and generative AI, and I ship with Claude Code and Codex so ideas get played, not just planned.</p>
@@ -228,10 +234,13 @@ section.blk{padding:72px 0 8px}
 
 <footer class="foot" id="contact">
   <div class="wrap">
-    <div class="frow"><span>© Muniac '26</span><span>Made by Amuro</span></div>
-    <div class="flinks"><a href="mailto:munachiochem143@gmail.com">Email</a><span class="d">·</span><a href="#contact" title="X handle to be added">Twitter</a></div>
+    <div class="frow"><span>©Muniac 2026</span><span>Made by Amuro</span></div>
+    <div class="flinks">
+      <a class="ico" href="mailto:munachiochem143@gmail.com" aria-label="Email munachiochem143@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"></rect><path d="M4 7l8 6 8-6"></path></svg></a>
+      <a class="ico" href="#contact" aria-label="X (Twitter) — handle to be added"><svg viewBox="0 0 24 24" aria-hidden="true" class="fill"><path d="M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"></path></svg></a>
+    </div>
   </div>
-  <p class="big" aria-hidden="true">@Muniac</p>
+  <p class="big" id="big" aria-hidden="true"><span>@Muniac</span></p>
 </footer>
 
 <script>
@@ -277,7 +286,7 @@ section.blk{padding:72px 0 8px}
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
-  function art(p, big) {
+  function art(p, big, noLive) {
     var a = p.art, host = p.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
     return '<div class="art" style="background:' + a.bg + '">' +
       '<div class="win" style="background:' + a.win + ';color:' + a.fg + '">' +
@@ -286,8 +295,24 @@ section.blk{padding:72px 0 8px}
       '<span class="h" style="font-size:' + (big ? a.hs * 1.25 : a.hs) + 'px">' + esc(a.h) + '</span>' +
       '<span class="s">' + esc(a.s) + '</span>' +
       '<span class="btn" style="background:' + a.acc + ';color:' + (a.win === '#fbf8f2' || a.win === '#f4f1ea' ? '#fff' : '#fff') + '">' + esc(a.b) + '</span>' +
-      '<span class="shot">Screenshot to come</span></div></div></div>';
+      '</div>' + (LIVE && !noLive ? '<div class="live"><iframe src="' + esc(p.url) + '" title="' + esc(p.name) + ' — opening screen" loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe></div>' : '') +
+      '</div></div>';
   }
+
+  // Live site previews: real opening screens inside the window frame. Skipped when this page is itself framed (e.g. the Claude preview), where other sites can't load.
+  var LIVE = window.self === window.top;
+  var VW = 1280;
+  function fitLive() {
+    document.querySelectorAll('.live').forEach(function (box) {
+      var w = box.clientWidth, h = box.clientHeight, f = box.firstChild;
+      if (!w) return;
+      var k = w / VW;
+      f.style.width = VW + 'px';
+      f.style.height = Math.ceil(h / k) + 'px';
+      f.style.transform = 'scale(' + k + ')';
+    });
+  }
+  window.addEventListener('resize', fitLive);
 
   // Lists
   document.getElementById('plist').innerHTML = P.map(function (p) {
@@ -295,8 +320,9 @@ section.blk{padding:72px 0 8px}
       '<div class="cap"><span>' + esc(p.name) + '</span><span>2026</span></div></a>';
   }).join('');
   document.getElementById('pcount').textContent = P.length;
+  requestAnimationFrame(fitLive);
   document.getElementById('peek').innerHTML = P.slice(0, 3).map(function (p) {
-    return '<a href="#p-' + p.id + '" aria-label="' + esc(p.name) + '">' + art(p) + '</a>';
+    return '<a href="#p-' + p.id + '" aria-label="' + esc(p.name) + '">' + art(p, false, true) + '</a>';
   }).join('');
 
   // Project view
@@ -329,11 +355,13 @@ section.blk{padding:72px 0 8px}
       document.title = m.name + ' — Muniac';
       renderTab();
       home.hidden = true; pv.hidden = false;
+      fitLive();
       window.scrollTo(0, 0);
     } else {
       document.title = 'Muniac — Ochem Michael Munachi';
       var wasHidden = home.hidden;
       home.hidden = false; pv.hidden = true;
+      requestAnimationFrame(fitLive);
       var el = h && document.getElementById(h);
       if (el) { if (wasHidden) setTimeout(function () { el.scrollIntoView(); }, 0); }
       else if (wasHidden) window.scrollTo(0, 0);
@@ -342,9 +370,25 @@ section.blk{padding:72px 0 8px}
   window.addEventListener('hashchange', route);
   route();
 
+  // Footer wordmark: stretch to the full width
+  function fitBig() {
+    var p = document.getElementById('big'), t = p.firstChild;
+    p.style.fontSize = '100px';
+    var w = t.getBoundingClientRect().width;
+    if (w) p.style.fontSize = (100 * (document.documentElement.clientWidth - 6) / w) + 'px';
+  }
+  fitBig();
+  window.addEventListener('resize', fitBig);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBig);
+
   // Menu
   var menu = document.getElementById('menu'), ob = document.getElementById('openMenu');
-  function setMenu(on) { menu.hidden = !on; ob.setAttribute('aria-expanded', on ? 'true' : 'false'); }
+  function setMenu(on) {
+    ob.setAttribute('aria-expanded', on ? 'true' : 'false');
+    document.body.classList.toggle('lock', on);
+    if (on) { menu.hidden = false; requestAnimationFrame(function () { menu.classList.add('open'); }); }
+    else { menu.classList.remove('open'); setTimeout(function () { if (!menu.classList.contains('open')) menu.hidden = true; }, 320); }
+  }
   ob.addEventListener('click', function () { setMenu(true); });
   document.getElementById('closeMenu').addEventListener('click', function () { setMenu(false); });
   menu.querySelectorAll('[data-close]').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
