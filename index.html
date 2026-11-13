@@ -142,6 +142,16 @@ section.blk{padding:72px 0 8px}
 .sframe.off{display:flex;align-items:center;justify-content:center;padding:12px;text-align:center;font-size:12px;color:var(--soft)}
 .stills figcaption{font-size:13px;color:var(--muted);margin-top:8px}
 @media (max-width:520px){.stills{grid-template-columns:1fr}}
+.doc{padding-top:20px}
+.dtabs{display:flex;gap:6px;margin:18px 0 0;border-bottom:1px solid var(--line)}
+.dtabs a{min-height:44px;display:inline-flex;align-items:center;padding:0 14px;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px}
+.dtabs a[aria-current="page"]{color:var(--fg);border-color:#c9a7f5}
+.doc h1{font-size:34px;font-weight:500;letter-spacing:-.03em;margin:26px 0 4px}
+.dsub{color:var(--muted);margin:0 0 18px}
+.sheet-prev{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.sheet-prev img{display:block;width:100%;height:auto}
+.dl{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 0}
+.dl .next{color:#c9a7f5;text-decoration:none;font-size:16px;min-height:44px;display:inline-flex;align-items:center}
 .cta{margin:48px 0 0;padding:28px 24px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
 .cta h2{margin:0 0 10px;font-size:26px;font-weight:500;letter-spacing:-.02em}
 .cta a{font-size:18px;color:#c9a7f5;text-decoration:none;word-break:break-all}
@@ -184,6 +194,7 @@ section.blk{padding:72px 0 8px}
     <nav aria-label="Main">
       <a href="#top" data-close>home</a>
       <a href="#projects" data-close>projects</a>
+      <a href="#resume" data-close>resume</a>
       <a href="#contact" data-close>contact</a>
     </nav>
   </div>
@@ -255,6 +266,17 @@ section.blk{padding:72px 0 8px}
       <h2>Want to work? Let's talk</h2>
       <a href="mailto:munachiochem143@gmail.com">munachiochem143@gmail.com ↗</a>
     </div>
+  </div>
+</main>
+
+<main id="docview" hidden>
+  <div class="wrap doc">
+    <a class="back" href="#top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>Home</a>
+    <div class="dtabs" role="navigation" aria-label="Documents"><a href="#resume" id="d-resume">Resume</a><a href="#cover-letter" id="d-cover-letter">Cover letter</a></div>
+    <h1 id="dtitle">Resume</h1>
+    <p class="dsub" id="dsub">Preview</p>
+    <div class="sheet-prev"><img id="dimg" src="docs/cv-preview.png" alt="" width="1240" height="1754"></div>
+    <div class="dl"><a class="visit" id="dlink" href="docs/Ochem-Michael-Munachi-Resume.pdf" download>Download PDF ↓</a><a class="next" id="dnext" href="#cover-letter">Cover letter →</a></div>
   </div>
 </main>
 
@@ -416,6 +438,26 @@ section.blk{padding:72px 0 8px}
 
   function route() {
     var h = (location.hash || '').slice(1);
+    var dv = document.getElementById('docview');
+    if (h === 'resume' || h === 'cover-letter') {
+      var cv = h === 'resume';
+      document.getElementById('dtitle').textContent = cv ? 'Resume' : 'Cover letter';
+      document.getElementById('dsub').textContent = cv ? 'Preview of Michael\'s resume. Download the PDF below.' : 'Preview of Michael\'s cover letter. Download the PDF below.';
+      var im = document.getElementById('dimg');
+      im.src = cv ? 'docs/cv-preview.png' : 'docs/cover-letter-preview.png';
+      im.alt = cv ? 'Resume of Ochem Michael Munachi' : 'Cover letter of Ochem Michael Munachi';
+      var dl = document.getElementById('dlink');
+      dl.href = cv ? 'docs/Ochem-Michael-Munachi-Resume.pdf' : 'docs/Ochem-Michael-Munachi-Cover-Letter.pdf';
+      var nx = document.getElementById('dnext');
+      nx.href = cv ? '#cover-letter' : '#resume'; nx.textContent = cv ? 'Cover letter →' : '← Resume';
+      document.getElementById('d-resume').setAttribute('aria-current', cv ? 'page' : 'false');
+      document.getElementById('d-cover-letter').setAttribute('aria-current', cv ? 'false' : 'page');
+      document.title = (cv ? 'Resume' : 'Cover letter') + ' — Muniac';
+      home.hidden = true; pv.hidden = true; dv.hidden = false;
+      window.scrollTo(0, 0);
+      return;
+    }
+    dv.hidden = true;
     var m = h.indexOf('p-') === 0 ? P.filter(function (p) { return 'p-' + p.id === h; })[0] : null;
     if (m) {
       cur = m;
