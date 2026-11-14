@@ -304,7 +304,7 @@ section.blk{padding:72px 0 8px}
     <h1 id="dtitle">Resume</h1>
     <p class="dsub" id="dsub">Preview</p>
     <div class="sheet-prev"><img id="dimg" alt="" width="1240" height="1754" decoding="async"></div>
-    <div class="dl"><a class="visit" id="dlink" href="docs/Ochem-Michael-Munachi-Resume.pdf" download>Download PDF</a></div>
+    <div class="dl"><a class="visit" id="dlink" href="docs/Ochem%20Michael%20Resume.pdf" download="Ochem Michael Resume.pdf">Download PDF</a></div>
   </div>
 </main>
 
@@ -507,7 +507,8 @@ section.blk{padding:72px 0 8px}
       im.src = cv ? 'docs/cv-preview.webp' : 'docs/cover-letter-preview.webp';
       im.alt = cv ? 'Resume of Ochem Michael Munachi' : 'Cover letter of Ochem Michael Munachi';
       var dl = document.getElementById('dlink');
-      dl.href = cv ? 'docs/Ochem-Michael-Munachi-Resume.pdf' : 'docs/Ochem-Michael-Munachi-Cover-Letter.pdf';
+      var dn = cv ? 'Ochem Michael Resume' : 'Ochem Michael Cover Letter';
+      dl.href = 'docs/' + encodeURIComponent(dn) + '.pdf'; dl.setAttribute('download', dn + '.pdf');
       document.getElementById('d-resume').setAttribute('aria-current', cv ? 'page' : 'false');
       document.getElementById('d-cover-letter').setAttribute('aria-current', cv ? 'false' : 'page');
       document.title = (cv ? 'Resume' : 'Cover letter') + ' — Muniac';
